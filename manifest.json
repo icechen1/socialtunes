@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.0.1",
   "manifest_version": 2,
-  "permissions": [ "alarms", "fileSystem", "storage", "notifications"],
+  "permissions": [ "alarms", "fileSystem", "storage", "notifications", { "mediaGalleries": ["read", "allAutoDetected"] }],
   "icons": {
     "128": "icons/icon-128.png"
   },
