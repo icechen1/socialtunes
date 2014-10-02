@@ -1,0 +1,88 @@
+/* App */
+
+body {
+  padding:0;
+  margin:0;
+  background-color:#DDD;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#menu {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:50px;
+  padding:15px;
+  background-color:#6200ea;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  color:#FFF;
+}
+
+#menu h1 {
+  margin:0;
+  padding:10px;
+  height:30px;
+  line-height:30px;
+  font-size:30px;
+  font-weight:lighter;
+}
+
+#musicApp {
+  margin-top:110px;
+}
+
+
+
+/* ListView */
+
+.ListView {
+  width: 500px;
+  margin:20px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+
+
+
+/* ListItem */
+
+.ListItem {
+  background-color:#FFF;
+  padding:10px;
+  transition: all ease 0.3s;
+}
+
+.ListItem:hover {
+  padding-left:30px;
+}
+
+.ListItem:nth-child(2) {
+  background-color:#EEE;
+}
+
+.ListItem img {
+  width:100px;
+  height:100px;
+  display:inline-block;
+  vertical-align:top;
+}
+
+.ListItem .info {
+  margin-left:10px;
+  color:#333;
+  display:inline-block;
+  vertical-align:top;
+}
+
+.ListItem .info h2 {
+  margin: 0 0 5px 0;
+  font-size:17px;
+  padding: 4px 0;
+}
+
+.ListItem .info p {
+  margin: 2px 0;
+  padding: 4px 0;
+  font-size:14px;
+}
