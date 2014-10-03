@@ -34,6 +34,10 @@ var Truss = (function() {
       c.element.className = settings.class;
       c.element.innerHTML = settings.template;
       
+      c.getElement = function(el) {
+        return c.element.querySelector(el);
+      };
+      
       if (settings.properties) {
         for (var index in s) {
           if (settings.properties[index]) {
@@ -49,6 +53,18 @@ var Truss = (function() {
             } else {
               t.setTemplate(c.element.querySelector(settings.properties[index]), s[index]);
             }
+          }
+        }
+      }
+      
+      if (settings.events) {
+        for (var index in settings.events) {
+          var el = index.substring(0, index.indexOf(":"));
+          var ev = index.substring(index.indexOf(":")+1);
+          if (el=="$") {
+            c.element.addEventListener(ev, settings.events[index].bind(c));
+          } else if (el) {
+            c.element.querySelector(el).addEventListener(ev, settings.events[index].bind(c));
           }
         }
       }
