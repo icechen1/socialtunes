@@ -105,14 +105,14 @@ body {
   margin-bottom:15px;
 }
 
+.upvote:hover {
+  border-color: transparent transparent #333 transparent;
+}
+
 .upvote.selected {
   border-color: transparent transparent #ea9000 transparent;
   -webkit-animation-name: pulse;
           animation-name: pulse;
-}
-
-.upvote:hover {
-  border-color: transparent transparent #333 transparent;
 }
 
 .downvote {
@@ -125,14 +125,14 @@ body {
   transition: all ease 0.3s;
 }
 
+.downvote:hover {
+  border-color: #333 transparent transparent transparent;
+}
+
 .downvote.selected {
   border-color: #080069 transparent transparent transparent;
   -webkit-animation-name: pulse;
           animation-name: pulse;
-}
-
-.downvote:hover {
-  border-color: #333 transparent transparent transparent;
 }
 
 

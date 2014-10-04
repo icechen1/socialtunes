@@ -1,18 +1,16 @@
 Truss.init(function() {
   var ListItem = Truss.createComponent({
     "class": "ListItem",
-    "template": [
-      "<img />",
-      "<div class='info'>",
-      "  <h2></h2>",
-      "  <p class='artist'></p>",
-      "  <p class='album'></p>",
+    "template": "<img />" +
+      "<div class='info'>" +
+        "<h2></h2>" +
+        "<p class='artist'></p>" +
+        "<p class='album'></p>" +
+      "</div>" +
+      "<div class='votes'>" +
+        "<a class='upvote animated'></a>" +
+        "<a class='downvote animated'></a>" +
       "</div>",
-      "<div class='votes'>",
-      "  <a class='upvote animated'></a>",
-      "  <a class='downvote animated'></a>",
-      "</div>"
-    ].join(""),
     "properties": {
       "art": "img:src",
       "song": "h2",
