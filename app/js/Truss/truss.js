@@ -13,9 +13,12 @@ var Truss = (function() {
     //Returns a new instance of the template
     template.new = function(s) {
       
+      s = s || {};
+      
       var c = {};
       
       var responses = {};
+      var properties = {};
       
       c.Truss = true;
       
@@ -29,7 +32,8 @@ var Truss = (function() {
       };
       
       //Fill the template with the specified values
-      var setTemplate = function(element, child) {
+      var setTemplate = function(element, child, add) {
+        if (!add) element.innerHTML = "";
         if (!child) return;
         if (typeof(child)=="string") {
           element.innerHTML += child;
@@ -39,7 +43,7 @@ var Truss = (function() {
           element.appendChild(child);
         } else if (child instanceof Array) {
           Array.prototype.forEach.call(child, function(ch) {
-            setTemplate(element, ch);
+            setTemplate(element, ch, add);
           });
         }
       };
@@ -114,23 +118,37 @@ var Truss = (function() {
         }
       };
       
+      c.setProperty = function(property, value, add) {
+        var p = settings.properties[property];
+        if (p) {
+          properties[property]=value;
+          if (p == "$") {
+            setTemplate(c.element, value, add);
+          } else if (p.indexOf(":")>=1) {
+            var el = p.substring(0, p.indexOf(":"));
+            var prop = p.substring(p.indexOf(":")+1);
+            var element = c.element.querySelector(el);
+            if (element && typeof(value == "string")) {
+              element.setAttribute(prop, value);
+            }
+          } else {
+            setTemplate(c.element.querySelector(p), value, add);
+          }
+        }
+      };
+      
+      c.addProperty = function(property, value) {
+        c.setProperty(property, value, true);
+      };
+      
+      c.property = function(property) {
+        return properties[property];
+      };
+      
       var index="";
       if (settings.properties) {
         for (index in s) {
-          if (settings.properties[index]) {
-            if (settings.properties[index] == "$") {
-              setTemplate(c.element, s[index]);
-            } else if (settings.properties[index].indexOf(":")>=1) {
-              var el = settings.properties[index].substring(0, settings.properties[index].indexOf(":"));
-              var prop = settings.properties[index].substring(settings.properties[index].indexOf(":")+1);
-              var element = c.element.querySelector(el);
-              if (element && typeof(s[index] == "string")) {
-                element.setAttribute(prop, s[index]);
-              }
-            } else {
-              setTemplate(c.element.querySelector(settings.properties[index]), s[index]);
-            }
-          }
+          c.addProperty(index, s[index]);
         }
       }
       

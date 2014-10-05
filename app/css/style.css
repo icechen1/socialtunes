@@ -1,5 +1,9 @@
 /* App */
 
+html {
+  overflow-y:auto;
+}
+
 body {
   padding:0;
   margin:0;
@@ -9,6 +13,7 @@ body {
 
 #menu {
   position:fixed;
+  z-index: 9001;
   top:0;
   left:0;
   right:0;
@@ -32,6 +37,19 @@ body {
   margin-top:110px;
 }
 
+@media all and (max-width: 700px) {
+  #musicApp {
+    margin-bottom:120px;
+  }
+}
+
+@media all and (max-width: 540px) {
+  #musicApp {
+    margin-top:80px;
+    margin-bottom:90px;
+  }
+}
+
 
 
 /* ListView */
@@ -43,7 +61,12 @@ body {
   background-color:#DDD;
 }
 
-
+@media all and (max-width: 540px) {
+  .ListView {
+    width:auto;
+    margin:0;
+  }
+}
 
 
 /* ListItem */
@@ -52,13 +75,15 @@ body {
   background-color:#FFF;
   padding:10px;
   transition: all ease 0.3s;
+  z-index: 1;
+  position:relative;
 }
 
 .ListItem:hover {
   transform: translate(20px, 0);
 }
 
-.ListItem:nth-child(2) {
+.ListItem:nth-child(even) {
   background-color:#EEE;
 }
 
@@ -133,6 +158,139 @@ body {
   border-color: #080069 transparent transparent transparent;
   -webkit-animation-name: pulse;
           animation-name: pulse;
+}
+
+@media all and (max-width: 540px) {
+  .ListItem:hover {
+    transform: translate(0, 0);
+  }
+}
+
+
+/* ActionButton */
+.ActionButton {
+  position:fixed;
+  bottom: 20px;
+  right: 20px;
+  width:90px;
+  height:90px;
+  border-radius:45px;
+  background-color:#6200ea;
+  color:#FFF;
+  text-decoration:none;
+  text-align:center;
+  line-height:50px;
+  font-size: 50px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: width ease 0.2s;
+  overflow:hidden;
+  z-index:9000;
+}
+
+.ActionButton .button {
+  display:block;
+  position:absolute;
+  z-index:2;
+  top:0;
+  right:0;
+  width:50px;
+  height:50px;
+  padding:20px;
+  text-decoration:none;
+  text-align:center;
+  line-height:50px;
+  font-size: 50px;
+  border-radius:45px;
+  background-color:#6200ea;
+  transition: transform ease 0.5s, color ease 0.2s, background-color ease 0.2s;
+}
+
+.ActionButton .button:hover, .ActionButton:hover {
+  background-color:#FFF;
+  color:#6200ea;
+}
+
+.ActionButton:hover {
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+.ActionButton.open {
+  width:520px;
+  border-radius: 45px;
+  background-color:#6200ea;
+  color:#FFF;
+}
+
+.ActionButton.open .button {
+  transform: rotate(180deg);
+}
+
+.ActionButton.open .button:hover {
+  color:#6200ea;
+  background-color:#FFF;
+}
+
+.ActionButton .player {
+  z-index:1;
+  width: 360px;
+  position:absolute;
+  top:0;
+  left:20px;
+  height: 50px;
+  padding:20px;
+  text-align:left;
+  font-size:0;
+}
+
+.ActionButton .player img {
+  height:100%;
+  width:auto;
+  display:inline-block;
+  vertical-align:top;
+}
+
+.ActionButton .info {
+  display: inline-block;
+  vertical-align: middle;
+  width: 200px;
+  height: 50px;
+  margin-left:20px;
+}
+
+.ActionButton .player h2 {
+  font-size: 14px;
+  line-height: 14px;
+  font-weight:bold;
+  margin: 5px 0;
+}
+
+.ActionButton .player h3 {
+  font-size: 14px;
+  font-weight:normal;
+  line-height: 14px;
+  margin: 5px 0;
+}
+
+@media all and (max-width: 700px) {
+  .ActionButton {
+    width:auto;
+    left:0;
+    right:0;
+    bottom:0;
+    border-radius: 0;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  }
+  .ActionButton:hover {
+    background-color:#6200ea;
+    color:#FFF;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  }
+  .ActionButton .button {
+    display:none;
+  }
+  .ActionButton .player {
+    left:0;
+  }
 }
 
 

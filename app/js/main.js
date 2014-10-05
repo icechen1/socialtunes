@@ -1,4 +1,30 @@
 Truss.init(function() {
+  var ActionButton = Truss.createComponent({
+    "class": "ActionButton",
+    "template": "<a class='button'>&lt;</a>" +
+      "<div class='player hidden'>" +
+        "<img src='' />" +
+        "<div class='info'>" +
+          "<h2></h2>" +
+          "<h3></h3>" +
+        "</div>" +
+      "</div>",
+    "properties": {
+      "song": "h2",
+      "artist": "h3",
+      "art": "img:src"
+    },
+    "events": {
+      ".button:click": function() {
+        if (this.element.className.indexOf("open") == -1) {
+          this.element.classList.add("open");
+        } else {
+          this.element.classList.remove("open");
+        }
+      }
+    }
+  });
+  
   var ListItem = Truss.createComponent({
     "class": "ListItem",
     "template": "<img />" +
@@ -72,8 +98,58 @@ Truss.init(function() {
         "song": "Song Name",
         "album": "Album Name",
         "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
+      }),
+      ListItem.new({
+        "art": "images/album.jpg",
+        "song": "Song Name",
+        "album": "Album Name",
+        "artist": "Artist Name"
       })
     ]
   });
   document.getElementById("musicApp").appendChild(l.element);
+  
+  
+  var playerBtn = ActionButton.new({
+    "song": "Hooked on a Feeling",
+    "artist": "David Hasselhoff",
+    "art": "images/hasselhoff.jpg"
+  });
+  document.body.appendChild(playerBtn.element);
 });
