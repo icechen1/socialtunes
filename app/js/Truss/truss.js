@@ -167,6 +167,8 @@ var Truss = (function() {
         }
       }
       
+      c.triggerEvent("init");
+      
       return c;
       
     };

@@ -2,7 +2,7 @@ var components = components || {};
 
 Truss.init(function(components) {
   components.ListItem = Truss.createComponent({
-    "class": "ListItem",
+    "class": "ListItem animated",
     "template": "<img />" +
       "<div class='info'>" +
         "<h2></h2>" +
@@ -43,6 +43,11 @@ Truss.init(function(components) {
         } else {
           downvote.classList.remove("selected");
         }
+      },
+      "init": function() {
+        var t = setTimeout(function() {
+          this.element.classList.remove("animated");
+        }.bind(this), 1000);
       }
     }
   });

@@ -22,6 +22,7 @@ body {
   background-color:#6200ea;
   box-shadow: 0 0 15px rgba(0,0,0,0.4);
   color:#FFF;
+  -webkit-transform: translateZ(0);
 }
 
 #menu h1 {
@@ -86,15 +87,18 @@ body {
 /* ListItem */
 
 .ListItem {
-  background-color:#FFF;
+  background-color:#fff;
   padding:10px;
   transition: all ease 0.3s;
   z-index: 1;
   position:relative;
+  -webkit-animation-name: fadeInUp;
+          animation-name: fadeInUp;
 }
 
 .ListItem:hover {
-  transform: translate(20px, 0);
+  transform: translate(20px, 0) !important;
+  -webkit-transform: translate(20px, 0) !important;
 }
 
 .ListItem:nth-child(even) {
@@ -128,6 +132,22 @@ body {
   margin: 2px 0;
   padding: 4px 0;
   font-size:14px;
+}
+
+.ListItem .add {
+  display:inline-block;
+  vertical-align:middle;
+  float:right;
+  padding:20px;
+  font-size:30px;
+  color:#AAA;
+  transition: all ease 0.3s;
+  text-decoration:none;
+  cursor:default;
+}
+
+.ListItem .add:hover {
+  color:#333;
 }
 
 .votes {
@@ -202,6 +222,7 @@ body {
   transition: width ease 0.2s;
   overflow:hidden;
   z-index:9000;
+  -webkit-transform: translateZ(0);
 }
 
 .ActionButton .button {
@@ -328,8 +349,8 @@ body {
 .animated {
   -webkit-animation-duration: 0.7s;
           animation-duration: 0.7s;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
+  -webkit-animation-fill-mode: backwards;
+          animation-fill-mode: backwards;
 }
 @-webkit-keyframes pulse {
   0% {
@@ -362,5 +383,33 @@ body {
   100% {
     -webkit-transform: scale3d(1, 1, 1);
             transform: scale3d(1, 1, 1);
+  }
+}
+
+@-webkit-keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+            transform: none;
   }
 }
