@@ -97,8 +97,8 @@ body {
 }
 
 .ListItem:hover {
-  transform: translate(20px, 0) !important;
-  -webkit-transform: translate(20px, 0) !important;
+  transform: translate(20px, 0);
+  -webkit-transform: translate(20px, 0);
 }
 
 .ListItem:nth-child(even) {
@@ -204,7 +204,15 @@ body {
 }
 
 
+/* LibraryView */
+
+.LibraryView {
+  overflow-y: hidden;
+}
+
+
 /* ActionButton */
+
 .ActionButton {
   position:fixed;
   bottom: 20px;
@@ -256,31 +264,6 @@ body {
   display:none;
 }
 
-.ActionButton.open .fa-minus {
-  display:inline-block;
-}
-
-.ActionButton.open .fa-play {
-  display:none;
-}
-
-
-.ActionButton.open {
-  width:520px;
-  border-radius: 45px;
-  background-color:#6200ea;
-  color:#FFF;
-}
-
-.ActionButton.open .button {
-  transform: rotate(180deg);
-}
-
-.ActionButton.open .button:hover {
-  color:#6200ea;
-  background-color:#FFF;
-}
-
 .ActionButton .player {
   z-index:1;
   width: 360px;
@@ -320,6 +303,33 @@ body {
   font-weight:normal;
   line-height: 14px;
   margin: 5px 0;
+}
+
+@media all and (min-width: 701px) {
+  .ActionButton.open .fa-minus {
+    display:inline-block;
+  }
+
+  .ActionButton.open .fa-play {
+    display:none;
+  }
+
+
+  .ActionButton.open {
+    width:520px;
+    border-radius: 45px;
+    background-color:#6200ea;
+    color:#FFF;
+  }
+
+  .ActionButton.open .button {
+    transform: rotate(180deg);
+  }
+
+  .ActionButton.open .button:hover {
+    color:#6200ea;
+    background-color:#FFF;
+  }
 }
 
 @media all and (max-width: 700px) {

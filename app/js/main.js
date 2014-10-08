@@ -4,65 +4,48 @@ Truss.init(function(components) {
   components.l = components.ListView.new({
     "header": "Library",
     "items": [
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.LibraryItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
+      components.LibraryView.new({
+        "items": [
+          components.LibrarySubmenu.new({
+            "name": "Songs"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          })
+        ]
       })
     ]
   });
@@ -76,7 +59,7 @@ Truss.init(function(components) {
         "song": "Song Name",
         "album": "Album Name",
         "artist": "Artist Name"
-      }),
+      })
       /*components.ListItem.new({
         "art": "images/album.jpg",
         "song": "Song Name",
