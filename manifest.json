@@ -3,17 +3,33 @@
   "description": "",
   "version": "0.0.1",
   "manifest_version": 2,
+  "offline_enabled": true,
+  "minimum_chrome_version": "33",
   "permissions": [ "alarms", "fileSystem", "storage", "notifications", { "mediaGalleries": ["read", "allAutoDetected"] }],
   "icons": {
     "128": "icons/icon-128.png"
   },
 
   "app": {
-      "background": {
-          "scripts": [
-              "background.js"
-          ]
-      }
-
-  }
+        "background": {
+            "scripts": ["httpserver/underscore.js","httpserver/common.js","httpserver/mime.js","httpserver/buffer.js","httpserver/request.js","httpserver/stream.js","httpserver/connection.js","httpserver/webapp.js","httpserver/handlers.js","httpserver/httplib.js","background.js"]
+        }
+    },
+    "permissions": [
+        "storage",
+        "notifications",
+        {"fileSystem":["write","directory","retainEntries"]}
+    ],
+    "sockets": {
+       "udp": {
+         "send": [""],
+         "bind": [""]
+       },
+       "tcp": {
+         "connect": [""]
+       },
+       "tcpServer": {
+         "listen": ["127.0.0.1:*"]
+       }
+    }
 }
