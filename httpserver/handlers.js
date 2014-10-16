@@ -43,18 +43,41 @@
         },
         get: function() {
             //this.request.connection.stream.onWriteBufferEmpty = this.onWriteBufferEmpty.bind(this)
+            console.log(this.request.path);
+            var path;
+            //Find the path
+            if(this.request.path == ""){
+                path = "index.html";
+            } else {
+                path = this.request.path;
+            }
+            //Fetch the file
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', chrome.runtime.getURL('app/'+ path), true);
+            xhr.send();
+            xhr.onreadystatechange = function()
+            {
+                this.setHeader('accept-ranges','bytes')
+                this.setHeader('connection','keep-alive')
+                if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
+                {
+                    this.write(xhr.responseText, 200);
+                    //TODO handle images and 404
+                }
+            }.bind(this);
 
-            this.setHeader('accept-ranges','bytes')
-            this.setHeader('connection','keep-alive')
+            
+            return;
+            /*
             if (! window.fs) {
-                this.write("error: need to select a directory to serve",500)
+                this.write("<b>error: need to select a directory to serve</b>",500)
                 return
             }
             //var path = decodeURI(this.request.path)
 
             // strip '/' off end of path
 
-            fs.getByPath(this.request.path, this.onEntry.bind(this))
+            fs.getByPath(this.request.path, this.onEntry.bind(this)) */
         },
         doReadChunk: function() {
             //console.log(this.request.connection.stream.sockId, 'doReadChunk', this.fileOffset)
