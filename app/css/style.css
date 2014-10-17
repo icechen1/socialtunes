@@ -36,7 +36,6 @@ body {
 
 #musicApp {
   margin-top:110px;
-  
   text-align:center;
 }
 
@@ -214,7 +213,8 @@ body {
 /* LibraryView */
 
 .LibraryView {
-
+  height:0;
+  overflow:hidden;
 }
 
 

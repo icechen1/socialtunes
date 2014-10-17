@@ -5,10 +5,14 @@ Truss.init(function(components) {
     "header": "Library",
     "items": [
       components.LibraryView.new({
+        "show": true,
         "items": [
           components.LibrarySubmenu.new({
             "name": "Songs",
-            "open": ""
+            "icon": "&gt;",
+            "open": function() {
+              components.l.property("items")[1].show();
+            }
           }),
           components.LibraryItem.new({
             "art": "images/album.jpg",
@@ -27,6 +31,35 @@ Truss.init(function(components) {
             "song": "Song Name",
             "album": "Album Name",
             "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          }),
+          components.LibraryItem.new({
+            "art": "images/album.jpg",
+            "song": "Song Name",
+            "album": "Album Name",
+            "artist": "Artist Name"
+          })
+        ]
+      }),
+      components.LibraryView.new({
+        "items": [
+          components.LibrarySubmenu.new({
+            "name": "Back",
+            "icon": "^",
+            "open": function() {
+              components.l.property("items")[0].show();
+            }
           }),
           components.LibraryItem.new({
             "art": "images/album.jpg",

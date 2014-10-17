@@ -6,13 +6,17 @@ Truss.init(function(components) {
     "template": "<div class='info'>" +
         "<h2></h2>" +
       "</div>" +
-      "<a class='open'>&gt;</a>",
+      "<a class='open'></a>",
     "properties": {
       "name": "h2",
+      "icon": ".open"
     },
     "events": {
       ".open:click": function() {
         this.triggerEvent("close");
+        if (typeof this.property("open") == "function") {
+          this.property("open")();
+        }
       }
     }
   });

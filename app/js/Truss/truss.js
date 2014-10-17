@@ -125,7 +125,11 @@ var Truss = (function() {
       
       c.setProperty = function(property, value, add) {
         var p = settings.properties[property];
-        properties[property]=value;
+        if (typeof value == "function") {
+          properties[property]=value.bind(this);
+        } else {
+          properties[property]=value;
+        }
         if (p) {
           if (p == "$") {
             setTemplate(c.element, value, add);
@@ -163,6 +167,12 @@ var Truss = (function() {
         }
       }
       
+      if (s.events) {
+        for (index in s.events) {
+          c.addListener(index, s.events[index].bind(c));
+        }
+      }
+
       if (settings.functions) {
         for (index in settings.functions) {
           c[index] = settings.functions[index];
