@@ -9,6 +9,7 @@ Truss.init(function(components) {
     },
     "functions": {
       "hide": function() {
+        this.element.style.overflow = "hidden";
         this.element.style.height = getComputedStyle(this.element).height;
         this.element.style.transition = 'height .5s ease';
         this.element.offsetHeight = this.element.offsetHeight; // force repaint
@@ -27,6 +28,7 @@ Truss.init(function(components) {
             this.element.style.transition = '';
             this.element.style.height = 'auto';
             this.element.removeEventListener('transitionend', transitionEnd, false);
+            this.element.style.overflow = "visible";
           }
         }, false);
       }

@@ -7,7 +7,8 @@ Truss.init(function(components) {
       components.LibraryView.new({
         "items": [
           components.LibrarySubmenu.new({
-            "name": "Songs"
+            "name": "Songs",
+            "open": ""
           }),
           components.LibraryItem.new({
             "art": "images/album.jpg",

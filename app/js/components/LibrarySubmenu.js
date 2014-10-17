@@ -2,7 +2,7 @@ var components = components || {};
 
 Truss.init(function(components) {
   components.LibrarySubmenu = Truss.createComponent({
-    "class": "ListItem",
+    "class": "ListItem Submenu",
     "template": "<div class='info'>" +
         "<h2></h2>" +
       "</div>" +

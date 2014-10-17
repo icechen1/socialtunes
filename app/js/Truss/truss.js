@@ -125,8 +125,8 @@ var Truss = (function() {
       
       c.setProperty = function(property, value, add) {
         var p = settings.properties[property];
+        properties[property]=value;
         if (p) {
-          properties[property]=value;
           if (p == "$") {
             setTemplate(c.element, value, add);
           } else if (p.indexOf(":")>=1) {
