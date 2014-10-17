@@ -1,12 +1,9 @@
+var app;
 var Launcher = (function() {
 
   var l={};
 
   l.launchApp = function() {
-    //TODO make this less stupid: this manually sets the hosting folder each time
-    //var entry = "C:\Users\YuChen\Dropbox\Photos"
-    //window.entry = entry
-    //window.fs = new FileSystem(entry)
 
     //Defines a handler to be used for the webserver
     function MainHandler() {
@@ -23,12 +20,10 @@ var Launcher = (function() {
     }
 
     var handlers = [
-//        ['.*', MainHandler]
-//        ['.*', PackageFilesHandler]
         ['.*', DirectoryEntryHandler]
     ]
     //Set up a web server with these settings and start it
-    var app = new chrome.WebApplication({handlers:handlers, port:8080})
+    app = new chrome.WebApplication({handlers:handlers, port:8080})
     app.start()
     
     //If the app window is already open, bring it to the front
@@ -65,14 +60,14 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
 
     var app = new chrome.WebApplication({handlers:handlers, port:8887})
     app.start()
-});
+}.bind(this));
 Launcher.init();
 
 //Some listeners for web server events
 chrome.runtime.onSuspend.addListener( function(evt) {
     console.error('onSuspend',evt)
     app.stop()
-})
+}.bind(this))
 
 
 function reload() { chrome.runtime.reload() }

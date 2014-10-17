@@ -54,6 +54,7 @@
             //Fetch the file
             var xhr = new XMLHttpRequest();
             xhr.open('GET', chrome.runtime.getURL('app/'+ path), true);
+            //xhr.responseType = "blob";
             xhr.send();
             xhr.onreadystatechange = function()
             {
@@ -61,7 +62,9 @@
                 this.setHeader('connection','keep-alive')
                 if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
                 {
+                    //var blob = xhr.response;
                     this.write(xhr.responseText, 200);
+                    //this.write(blob, 200);
                     //TODO handle images and 404
                 }
             }.bind(this);
