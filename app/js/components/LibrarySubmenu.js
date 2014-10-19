@@ -12,7 +12,7 @@ Truss.init(function(components) {
       "icon": ".open"
     },
     "events": {
-      ".open:click": function() {
+      "$:click": function() {
         this.triggerEvent("close");
         if (typeof this.property("open") == "function") {
           this.property("open")();

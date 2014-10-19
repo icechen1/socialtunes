@@ -66,6 +66,7 @@ body {
   text-align:center;
   position:absolute;
   overflow-y:scroll;
+  overflow-x:hidden;
   top:80px;
   left:0;
   right:0;
@@ -110,10 +111,23 @@ body {
   cursor:pointer;
 }
 
+.MenuButton.toggled {
+  transform: rotate(180deg);
+}
+
+.MenuButton.toggled .button {
+  transform: rotate(-180deg);
+}
+
 .MenuButton .button:hover {
   background-color:rgba(255, 255, 255, 0.2);
 }
 
+@media all and (min-width: 1088px) {
+  .MenuButton {
+    display:none;
+  }
+}
 
 
 /* ListView */
@@ -167,6 +181,15 @@ body {
           animation-name: fadeInUp;
 }
 
+.ListItem.added {
+  -webkit-animation-name: tint-pulse;
+          animation-name: tint-pulse;
+}
+
+.ListItem.added .icon {
+  transform: rotate(180deg);
+}
+
 .ListItem:hover {
   transform: translate(20px, 0);
   -webkit-transform: translate(20px, 0);
@@ -211,19 +234,21 @@ body {
   font-size:14px;
 }
 
-.ListItem .add, .ListItem .open {
+.ListItem .icon, .ListItem .open {
   display:inline-block;
   vertical-align:middle;
   float:right;
+  width: 30px;
+  text-align:center;
   padding:20px;
-  font-size:30px;
+  font-size:20px;
   color:#AAA;
   transition: all ease 0.3s;
   text-decoration:none;
   cursor:default;
 }
 
-.ListItem .add:hover, .ListItem .open:hover {
+.ListItem .icon:hover, .ListItem .open:hover {
   color:#333;
 }
 
@@ -447,8 +472,8 @@ body {
   }
 
   50% {
-    -webkit-transform: scale3d(1.5, 1.5, 1.5);
-            transform: scale3d(1.5, 1.5, 1.5);
+    -webkit-transform: scale3d(1.2, 1.2, 1.2);
+            transform: scale3d(1.2, 1.2, 1.2);
   }
 
   100% {
@@ -464,8 +489,8 @@ body {
   }
 
   50% {
-    -webkit-transform: scale3d(1.5, 1.5, 1.5);
-            transform: scale3d(1.5, 1.5, 1.5);
+    -webkit-transform: scale3d(1.2, 1.2, 1.2);
+            transform: scale3d(1.2, 1.2, 1.2);
   }
 
   100% {
@@ -473,6 +498,35 @@ body {
             transform: scale3d(1, 1, 1);
   }
 }
+
+@-webkit-keyframes tint-pulse {
+  0% {
+
+  }
+
+  50% {
+    background-color: #a56cf4;
+  }
+
+  100% {
+
+  }
+}
+
+@keyframes tint-pulse {
+  0% {
+
+  }
+
+  50% {
+    background-color: #a56cf4;
+  }
+
+  100% {
+
+  }
+}
+
 
 @-webkit-keyframes fadeInUp {
   0% {

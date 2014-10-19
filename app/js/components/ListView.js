@@ -18,6 +18,7 @@ Truss.init(function(components) {
         this.element.style.height = '0';
         this.element.style.marginTop = "0";
         this.element.style.marginBottom = "0";
+        this.setProperty("open", false);
       },
       "show": function() {
         var prevHeight = "0";
@@ -29,6 +30,7 @@ Truss.init(function(components) {
         this.element.style.height = endHeight;
         this.element.style.marginTop = "";
         this.element.style.marginBottom = "";
+        this.setProperty("open", true);
         this.element.addEventListener('transitionend', function transitionEnd(event) {
           if (event.propertyName == 'all') {
             this.style.transition = '';
@@ -42,6 +44,7 @@ Truss.init(function(components) {
     "events": {
       "init": function() {
         if (this.property("hide")) {
+          this.setProperty("open", false);
           this.element.style.height = '0';
           this.element.style.overflow = "hidden";
           this.element.style.marginTop = "0";

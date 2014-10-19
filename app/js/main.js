@@ -11,7 +11,7 @@ Truss.init(function(components) {
         "items": [
           components.LibrarySubmenu.new({
             "name": "Songs",
-            "icon": "&gt;",
+            "icon": "<i class='fa fa-chevron-right'></i>",
             "open": function() {
               components.l.property("items")[1].show();
             }
@@ -58,7 +58,7 @@ Truss.init(function(components) {
         "items": [
           components.LibrarySubmenu.new({
             "name": "Back",
-            "icon": "^",
+            "icon": "<i class='fa fa-chevron-up'></i>",
             "open": function() {
               components.l.property("items")[0].show();
             }
@@ -106,8 +106,17 @@ Truss.init(function(components) {
   components.qb = components.MenuButton.new({
     "icon": "<i class='fa fa-list'></i>",
     "open": function() {
-      components.q.show();
-      components.l.hide();
+      if (!components.q.property("open")) {
+        components.q.show();
+        components.l.hide();
+        this.setProperty("icon", "<i class='fa fa-close'></i>");
+        this.element.classList.add("toggled");
+      } else {
+        components.q.hide();
+        components.l.show();
+        this.setProperty("icon", "<i class='fa fa-list'></i>");
+        this.element.classList.remove("toggled");
+      }
     }
   });
   document.getElementById("menu").appendChild(components.qb.element);

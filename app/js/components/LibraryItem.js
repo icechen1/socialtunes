@@ -9,15 +9,22 @@ Truss.init(function(components) {
         "<p class='artist'></p>" +
         "<p class='album'></p>" +
       "</div>" +
-      "<a class='add'>+</a>",
+      "<a class='icon'></a>",
     "properties": {
       "art": "img:src",
       "song": "h2",
       "album": ".album",
-      "artist": ".artist"
+      "artist": ".artist",
+      "icon": ".icon"
     },
     "events": {
-      ".add:click": function() {
+      "init": function() {
+        this.setProperty("icon", "<i class='fa fa-plus'></i>");
+      },
+      "$:click": function() {
+        this.setProperty("icon", "<i class='fa fa-minus'>");
+        this.element.classList.add("animated");
+        this.element.classList.add("added");
         components.q.addProperty("items", components.ListItem.new({
           "art": this.property("art"),
           "song": this.property("song"),
