@@ -1,6 +1,8 @@
 var components = components || {};
 
 Truss.init(function(components) {
+
+  //Library
   components.l = components.ListView.new({
     "header": "Library",
     "items": [
@@ -85,6 +87,7 @@ Truss.init(function(components) {
   });
   document.getElementById("musicApp").appendChild(components.l.element);
   
+  //Queue
   components.q = components.ListView.new({
     "header": "Queue",
     "items": [
@@ -94,29 +97,22 @@ Truss.init(function(components) {
         "album": "Album Name",
         "artist": "Artist Name"
       })
-      /*components.ListItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.ListItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      }),
-      components.ListItem.new({
-        "art": "images/album.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      })*/
-    ]
+    ],
+    "hide": true
   });
   document.getElementById("musicApp").appendChild(components.q.element);
   
+  //Queue Menu button
+  components.qb = components.MenuButton.new({
+    "icon": "<i class='fa fa-list'></i>",
+    "open": function() {
+      components.q.show();
+      components.l.hide();
+    }
+  });
+  document.getElementById("menu").appendChild(components.qb.element);
   
+  //Now Playing
   components.playerBtn = components.ActionButton.new({
     "song": "Hooked on a Feeling",
     "artist": "David Hasselhoff",
