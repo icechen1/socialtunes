@@ -125,10 +125,14 @@ var Truss = (function() {
       
       c.setProperty = function(property, value, add) {
         var p = settings.properties[property];
-        if (typeof value == "function") {
-          properties[property]=value.bind(this);
+        if (properties[property] && properties[property] instanceof Array && add) {
+          properties[property].push(value);
         } else {
-          properties[property]=value;
+          if (typeof value == "function") {
+            properties[property]=value.bind(this);
+          } else {
+            properties[property]=value;
+          }
         }
         if (p) {
           if (p == "$") {
@@ -145,6 +149,25 @@ var Truss = (function() {
           }
         }
       };
+      
+      c.removeProperty = function(property, value) {
+        if (properties[property]) {
+          if (properties[property] == value) {
+            delete properties[property];
+          } else if (properties[property] instanceof Array) {
+            for (var i=0; i<properties[property].length; i++) {
+              if (properties[property][i] == value) {
+                properties[property].splice(i, 1);
+                if (value.Truss && value.element.parentElement) {
+                  value.element.parentElement.removeChild(value.element);
+                } else if (value.tagName && value.parentElement) {
+                  value.parentElement.removeChild(value);
+                }
+              }
+            }
+          }
+        }
+      }
       
       c.addProperty = function(property, value) {
         c.setProperty(property, value, true);

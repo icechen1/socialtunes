@@ -54,17 +54,31 @@
             //Fetch the file
             var xhr = new XMLHttpRequest();
             xhr.open('GET', chrome.runtime.getURL('app/'+ path), true);
-            //xhr.responseType = "blob";
+            xhr.responseType = "arraybuffer";
             xhr.send();
-            xhr.onreadystatechange = function()
+            xhr.onload = function()
             {
                 this.setHeader('accept-ranges','bytes')
                 this.setHeader('connection','keep-alive')
                 if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200)
                 {
                     //var blob = xhr.response;
+                    
                     this.write(xhr.responseText, 200);
                     //this.write(blob, 200);
+                  
+                  /*var uInt8Array = new Uint8Array(xhr.response);
+                  var i = uInt8Array.length;
+                  var binaryString = new Array(i);
+                  while (i--)
+                  {
+                    binaryString[i] = String.fromCharCode(uInt8Array[i]);
+                  }
+                  var data = binaryString.join('');
+
+                  var base64 = window.btoa(data);
+
+                  this.write("data:image/png;base64,"+base64, 200);*/
                     //TODO handle images and 404
                 }
             }.bind(this);

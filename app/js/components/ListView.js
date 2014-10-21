@@ -32,7 +32,7 @@ Truss.init(function(components) {
         this.element.style.marginBottom = "";
         this.setProperty("open", true);
         this.element.addEventListener('transitionend', function transitionEnd(event) {
-          if (event.propertyName == 'all') {
+          if (event.propertyName == 'height') {
             this.style.transition = '';
             this.style.height = 'auto';
             this.removeEventListener('transitionend', transitionEnd, false);
