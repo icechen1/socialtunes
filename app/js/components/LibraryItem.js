@@ -26,6 +26,7 @@ Truss.init(function(components) {
           this.setProperty("icon", "<i class='fa fa-minus'>");
           this.setProperty("added", true);
           this.element.classList.add("animated");
+          this.element.classList.remove("removed");
           this.element.classList.add("added");
           this.setProperty("queueItem", components.ListItem.new({
             "art": this.property("art"),
@@ -37,10 +38,9 @@ Truss.init(function(components) {
         } else {
           this.setProperty("icon", "<i class='fa fa-plus'>");
           this.setProperty("added", false);
-          this.element.classList.remove("animated");
           this.element.classList.remove("added");
-          
-          //TODO: change this to this.property("queueItem")
+          this.element.classList.add("removed");
+
           this.property("queueItem").element.style.overflow = "hidden";
           this.property("queueItem").element.style.height = getComputedStyle(this.property("queueItem").element).height;
           this.property("queueItem").element.style.transition = 'all .5s ease';

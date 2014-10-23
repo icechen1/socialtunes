@@ -7,7 +7,7 @@ html {
 body {
   padding:0;
   margin:0;
-  background-color:#DDD;
+  background-color:#ebebeb;
   font-family: 'Open Sans', sans-serif;
   overflow:hidden;
 }
@@ -45,8 +45,9 @@ body {
   right:0;
   height:50px;
   padding:15px;
-  background-color:#6200ea;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  background-color:#dd191d;
+  border-bottom:5px solid rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
   color:#FFF;
   -webkit-transform: translateZ(0);
 }
@@ -58,7 +59,14 @@ body {
   line-height:30px;
   font-size:30px;
   font-weight:lighter;
-  float:left;
+  display:inline-block;
+  vertical-align:middle;
+}
+
+#menu img {
+  max-height:100%;
+  width:auto;
+  vertical-align:middle;
 }
 
 #musicApp {
@@ -72,12 +80,21 @@ body {
   right:0;
   bottom:0;
   font-size: 0;
+  background-color:#ebebeb;
+  -webkit-animation: fadein 1.5s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadein 1.5s; /* Firefox < 16 */
+      -ms-animation: fadein 1.5s; /* Internet Explorer */
+       -o-animation: fadein 1.5s; /* Opera < 12.1 */
+          animation: fadein 1.5s;
 }
 
 @media all and (max-width: 700px) {
   #musicApp {
     padding-bottom:30px;
     bottom:90px;
+  }
+  #menu h1 {
+    font-size: 25px;
   }
 }
 
@@ -138,12 +155,12 @@ body {
   width: 500px;
   margin:20px;
   text-align:left;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
   background-color:#DDD;
 }
 
 .ListView h2 {
-  background-color:#555;
+  background-color:#ffab00;
   color:#FFF;
   font-weight:lighter;
   margin:0;
@@ -184,6 +201,11 @@ body {
 .ListItem.added {
   -webkit-animation-name: tint-pulse;
           animation-name: tint-pulse;
+}
+
+.ListItem.removed {
+  -webkit-animation-name: tint-pulse-r;
+          animation-name: tint-pulse-r;
 }
 
 .ListItem.added .icon {
@@ -323,13 +345,13 @@ body {
   width:90px;
   height:90px;
   border-radius:45px;
-  background-color:#6200ea;
+  background-color:#dd191d;
   color:#FFF;
   text-decoration:none;
   text-align:center;
   line-height:50px;
   font-size: 50px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
   transition: width ease 0.2s;
   overflow:hidden;
   z-index:9000;
@@ -350,17 +372,17 @@ body {
   line-height:50px;
   font-size: 40px;
   border-radius:45px;
-  background-color:#6200ea;
+  background-color:#dd191d;
   transition: transform ease 0.5s, color ease 0.2s, background-color ease 0.2s;
 }
 
 .ActionButton .button:hover, .ActionButton:hover {
   background-color:#FFF;
-  color:#6200ea;
+  color:#dd191d;
 }
 
 .ActionButton:hover {
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
 }
 
 .ActionButton .fa-minus {
@@ -421,7 +443,7 @@ body {
   .ActionButton.open {
     width:520px;
     border-radius: 45px;
-    background-color:#6200ea;
+    background-color:#dd191d;
     color:#FFF;
   }
 
@@ -430,7 +452,7 @@ body {
   }
 
   .ActionButton.open .button:hover {
-    color:#6200ea;
+    color:#dd191d;
     background-color:#FFF;
   }
 }
@@ -445,7 +467,7 @@ body {
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
   }
   .ActionButton:hover {
-    background-color:#6200ea;
+    background-color:#dd191d;
     color:#FFF;
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
   }
@@ -505,7 +527,7 @@ body {
   }
 
   50% {
-    background-color: #a56cf4;
+    background-color: #ffab00;
   }
 
   100% {
@@ -519,7 +541,35 @@ body {
   }
 
   50% {
-    background-color: #a56cf4;
+    background-color: #ffab00;
+  }
+
+  100% {
+
+  }
+}
+
+@-webkit-keyframes tint-pulse-r {
+  0% {
+
+  }
+
+  50% {
+    background-color: #dd191d;
+  }
+
+  100% {
+
+  }
+}
+
+@keyframes tint-pulse-r {
+  0% {
+
+  }
+
+  50% {
+    background-color: #dd191d;
   }
 
   100% {
@@ -554,4 +604,34 @@ body {
     -webkit-transform: none;
             transform: none;
   }
+}
+
+/* Animation keyframes */
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
