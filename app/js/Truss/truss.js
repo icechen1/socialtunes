@@ -140,7 +140,12 @@ var Truss = (function() {
           } else if (p.indexOf(":")>=1) {
             var el = p.substring(0, p.indexOf(":"));
             var prop = p.substring(p.indexOf(":")+1);
-            var element = c.element.querySelector(el);
+            var element;
+            if (el == "$") {
+              element = c.element;
+            } else {
+              element = c.element.querySelector(el);
+            }
             if (element && typeof(value == "string")) {
               element.setAttribute(prop, value);
             }

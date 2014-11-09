@@ -56,4 +56,4 @@ var addMusic = function(err, musicfile){
   });
 }
 
-walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
+//walk("C:\\", /.mp3$/, addMusic);

@@ -128,4 +128,8 @@ Truss.init(function(components) {
     "art": "images/hasselhoff.jpg"
   });
   document.body.appendChild(components.playerBtn.element);
+  
+  components.socket.on("vote_updated", function(msg) {
+    console.log(msg);
+  });
 }, components);

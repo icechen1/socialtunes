@@ -37,21 +37,6 @@ body {
   background-color: transparent;
 }
 
-a.button {
-  cursor:pointer;
-  padding:20px;
-  margin:20px;
-  color:#FFF;
-  background-color: #dd191d;
-  transition: all 0.3s ease;
-  display:inline-block;
-  border-radius:10px;
-}
-
-a.button:hover {
-  background-color: #ffab00;
-}
-
 #menu {
   position:fixed;
   z-index: 9001;
@@ -138,6 +123,21 @@ a.button:hover {
 .DirectoryPicker p {
   text-align:left;
   padding:20px;
+}
+
+.DirectoryPicker a.button {
+  cursor:pointer;
+  padding:20px;
+  margin:20px;
+  color:#FFF;
+  background-color: #dd191d;
+  transition: all 0.3s ease;
+  display:inline-block;
+  border-radius:10px;
+}
+
+.DirectoryPicker a.button:hover {
+  background-color: #ffab00;
 }
 
 
