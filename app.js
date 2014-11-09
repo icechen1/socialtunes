@@ -40,7 +40,7 @@ var walk = function(dir, match, done) {
   });
 };
 
-walk("C:/Users/dave_000/", /.mp3$/, function(err, results) {
+/*walk("C:/Users/dave_000/", /.mp3$/, function(err, results) {
   if (err) throw err;
   //console.log(results);
-});
+});*/

@@ -2,7 +2,7 @@
   "name": "Socialtunes",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,21 @@
   "bugs": {
     "url": "https://github.com/icechen1/socialtunes/issues"
   },
-  "homepage": "https://github.com/icechen1/socialtunes"
+  "homepage": "https://github.com/icechen1/socialtunes",
+  "scripts": {
+    "start": "nodewebkit"
+  },
+  "window": {
+    "title": "Socialtunes",
+    "icon": "icons/cd-transparent.png",
+    "toolbar": false,
+    "frame": true,
+    "width": 800,
+    "height": 500,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 800,
+    "max_height": 600
+  }
 }
