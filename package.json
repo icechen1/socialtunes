@@ -22,13 +22,11 @@
     "icon": "icons/cd-transparent.png",
     "toolbar": false,
     "frame": true,
-    "width": 800,
+    "width": 900,
     "height": 500,
     "position": "mouse",
-    "min_width": 400,
-    "min_height": 200,
-    "max_width": 800,
-    "max_height": 600
+    "min_width": 300,
+    "min_height": 300
   },
   "dependencies": {
     "nodewebkit": "~0.10.5",
