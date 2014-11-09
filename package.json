@@ -4,7 +4,7 @@
   "description": "",
   "main": "app/index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodewebkit"
   },
   "repository": {
     "type": "git",
@@ -16,9 +16,6 @@
     "url": "https://github.com/icechen1/socialtunes/issues"
   },
   "homepage": "https://github.com/icechen1/socialtunes",
-  "scripts": {
-    "start": "nodewebkit"
-  },
   "window": {
     "title": "Socialtunes",
     "icon": "icons/cd-transparent.png",
@@ -31,5 +28,8 @@
     "min_height": 200,
     "max_width": 800,
     "max_height": 600
+  },
+  "dependencies": {
+    "nodewebkit": "~0.10.5"
   }
 }
