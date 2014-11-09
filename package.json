@@ -31,6 +31,8 @@
     "nodewebkit": "~0.10.5",
     "fs": "0.0.2",
     "express": "~4.10.1",
-    "socket.io": "~1.2.0"
+    "socket.io": "~1.2.0",
+    "sequelize": "~2.0.0-rc2",
+    "sqlite3": "~3.0.2"
   }
 }

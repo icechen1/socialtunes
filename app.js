@@ -12,12 +12,28 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
-http.listen(process.env.PORT||3002, function(){
-  console.log('listening on port '+ process.env.PORT||3002);
+http.listen(process.env.PORT||3005, function(){
+  console.log('listening on port '+ process.env.PORT||3005);
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+    window.console.log('a user connected');
+    
+    socket.on('new_queue', function(msg){
+        socket.emit('new_queue', msg);
+    });
+
+    socket.on('vote_up', function(msg){
+        socket.emit('vote_up', msg);
+    });
+    
+    socket.on('vote_down', function(msg){
+        socket.emit('vote_down', msg);
+    });
+    
+    socket.on('vote_cancel', function(msg){
+        socket.emit('vote_cancel', msg);
+    });
 }); 
 
 var walk = function(dir, match, done) {
@@ -56,4 +72,5 @@ var addMusic = function(err, musicfile){
   });
 }
 
-walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
+//walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
+walk("/home/icechen1/Downloads/", /.mp3$/, addMusic);
