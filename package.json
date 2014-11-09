@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app/index.html",
+  "node-main": "app.js",
   "scripts": {
     "start": "nodewebkit"
   },
@@ -19,7 +20,7 @@
   "window": {
     "title": "Socialtunes",
     "icon": "icons/cd-transparent.png",
-    "toolbar": false,
+    "toolbar": true,
     "frame": true,
     "width": 900,
     "height": 500,
@@ -28,6 +29,9 @@
     "min_height": 300
   },
   "dependencies": {
-    "nodewebkit": "~0.10.5"
+    "nodewebkit": "~0.10.5",
+    "fs": "0.0.2",
+    "express": "~4.10.1",
+    "socket.io": "~1.2.0"
   }
 }
