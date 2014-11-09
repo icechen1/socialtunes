@@ -71,11 +71,11 @@ var addMusic = function(err, musicfile){
       if (err) throw err;
       window.console.log(tags.title);
   });
-}
-
-var setDirectiory= function(dir){
+};
+this.setDirectory = function(dir){
   musicPath = dir;
-}
+  walk(musicPath, /.mp3$/, addMusic);
+};
 
 //walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
-walk(musicPath, /.mp3$/, addMusic);
+

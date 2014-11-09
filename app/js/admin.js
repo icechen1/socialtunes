@@ -7,7 +7,9 @@ Truss.init(function(components) {
     DirectoryPicker.querySelector("input").click();
   });
   
-  DirectoryPicker.querySelector("submit").addEventListener("click", function() {
-    process.mainModule.setDirectory(DirectoryPicker.querySelector("input").value);
+  DirectoryPicker.querySelector(".submit").addEventListener("click", function() {
+    //window.console.log(process.mainModule.exports);
+    //window.console.log(process.mainModule.exports.setDirectory);
+    process.mainModule.exports.setDirectory(DirectoryPicker.querySelector("input").value);
   });
 }, components);
