@@ -12,19 +12,35 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
-http.listen(process.env.PORT||3002, function(){
-  console.log('listening on port '+ process.env.PORT||3002);
+http.listen(process.env.PORT||3005, function(){
+  console.log('listening on port '+ process.env.PORT||3005);
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+    window.console.log('a user connected');
+    
+    socket.on('new_queue', function(msg){
+        socket.emit('new_queue', msg);
+    });
+
+    socket.on('vote_up', function(msg){
+        socket.emit('vote_up', msg);
+    });
+    
+    socket.on('vote_down', function(msg){
+        socket.emit('vote_down', msg);
+    });
+    
+    socket.on('vote_cancel', function(msg){
+        socket.emit('vote_cancel', msg);
+    });
 }); 
 
 var walk = function(dir, match, done) {
   fs.readdir(dir, function(err, list) {
     if (err) return done(err);
     var pending = list.length;
-    if (!pending) return done(null, results);
+    if (!pending) return window.console.log("No files here in " + dir + "!");
     list.forEach(function(file) {
       file = dir + '/' + file;
       fs.stat(file, function(err, stat) {
@@ -48,12 +64,12 @@ var walk = function(dir, match, done) {
 var addMusic = function(err, musicfile){
   if (err) throw err;
   music.push(musicfile);
-  console.log("Pushed");
-  console.log(musicfile);
+  window.console.log("Pushed");
+  window.console.log(musicfile);
   id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
       if (err) throw err;
-      console.log(tags.v2.image);
+      window.console.log(tags.title);
   });
 }
 
-//walk("C:\\", /.mp3$/, addMusic);
+walk("/home/icechen1/Downloads/", /.mp3$/, addMusic);
