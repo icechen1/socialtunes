@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var fs = require('fs');
-
+var music = [];
+var io = require("socket.io")(http);
 
 app.use(express.static(__dirname + '/app'));
 
@@ -10,12 +11,15 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
-http.listen(process.env.PORT||3000, function(){
-  console.log('listening on port '+ process.env.PORT||3000);
+http.listen(process.env.PORT||3002, function(){
+  console.log('listening on port '+ process.env.PORT||3002);
 });
 
+io.on('connection', function(socket){
+  console.log('a user connected');
+}); 
+
 var walk = function(dir, match, done) {
-  var results = [];
   fs.readdir(dir, function(err, list) {
     if (err) return done(err);
     var pending = list.length;
@@ -24,23 +28,27 @@ var walk = function(dir, match, done) {
       file = dir + '/' + file;
       fs.stat(file, function(err, stat) {
         if (stat && stat.isDirectory()) {
-          walk(file, match, function(err, res) {
-            results = results.concat(res);
-            if (!--pending) done(null, results);
-          });
+          walk(file, match, addMusic);
+            //function(err, res) {
+            //results = results.concat(res);
+            //if (!--pending) done(null, results);
+          //});
         } else {
           if (match.test(file)) {
-            results.push(file);
-            console.log(file);
+            done(null, file);
           }
-          if (!--pending) done(null, results);
+          //if (!--pending) done(null, results);
         }
       });
     });
   });
 };
 
-/*walk("C:/Users/dave_000/", /.mp3$/, function(err, results) {
+var addMusic = function(err, file){
   if (err) throw err;
-  //console.log(results);
-});*/
+  music.push(file);
+  console.log("Pushed");
+  console.log(file);
+}
+
+walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
