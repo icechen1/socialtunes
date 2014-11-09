@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app/index.html",
+  "node-main": "app.js",
   "scripts": {
     "start": "nodewebkit"
   },
@@ -30,6 +31,8 @@
     "max_height": 600
   },
   "dependencies": {
-    "nodewebkit": "~0.10.5"
+    "nodewebkit": "~0.10.5",
+    "fs": "0.0.2",
+    "express": "~4.10.1"
   }
 }
