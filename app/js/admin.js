@@ -1,7 +1,13 @@
 var components = components || {};
 
 Truss.init(function(components) {
-  components.d = components.DirectoryPicker.new({});
+  var DirectoryPicker = document.querySelector(".DirectoryPicker");
   
-  document.getElementById("musicApp").appendChild(components.d.element);
+  DirectoryPicker.querySelector(".picker").addEventListener("click", function() {
+    DirectoryPicker.querySelector("input").click();
+  });
+  
+  DirectoryPicker.querySelector("submit").addEventListener("click", function() {
+    process.mainModule.setDirectory(DirectoryPicker.querySelector("input").value);
+  });
 }, components);
