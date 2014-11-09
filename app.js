@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var fs = require('fs');
 var music = [];
 var io = require("socket.io")(http);
+var id3 = require('id3js');
 
 app.use(express.static(__dirname + '/app'));
 
@@ -44,11 +45,15 @@ var walk = function(dir, match, done) {
   });
 };
 
-var addMusic = function(err, file){
+var addMusic = function(err, musicfile){
   if (err) throw err;
-  music.push(file);
+  music.push(musicfile);
   console.log("Pushed");
-  console.log(file);
+  console.log(musicfile);
+  id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
+      if (err) throw err;
+      console.log(tags.v2.image);
+  });
 }
 
 walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
