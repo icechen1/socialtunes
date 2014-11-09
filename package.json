@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app/index.html",
-<<<<<<< HEAD
-=======
   "scripts": {
     "start": "nodewebkit"
   },
->>>>>>> d9f5bb5bc82ea1f4e1922fc43cc46dfb19e1fc45
   "repository": {
     "type": "git",
     "url": "https://github.com/icechen1/socialtunes.git"
