@@ -24,7 +24,7 @@ var walk = function(dir, match, done) {
   fs.readdir(dir, function(err, list) {
     if (err) return done(err);
     var pending = list.length;
-    if (!pending) return done(null, results);
+    if (!pending) return window.console.log("No files here in " + dir + "!");
     list.forEach(function(file) {
       file = dir + '/' + file;
       fs.stat(file, function(err, stat) {
@@ -48,11 +48,11 @@ var walk = function(dir, match, done) {
 var addMusic = function(err, musicfile){
   if (err) throw err;
   music.push(musicfile);
-  console.log("Pushed");
-  console.log(musicfile);
+  window.console.log("Pushed");
+  window.console.log(musicfile);
   id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
       if (err) throw err;
-      console.log(tags.v2.image);
+      window.console.log(tags.title);
   });
 }
 
