@@ -37,6 +37,21 @@ body {
   background-color: transparent;
 }
 
+a.button {
+  cursor:pointer;
+  padding:20px;
+  margin:20px;
+  color:#FFF;
+  background-color: #dd191d;
+  transition: all 0.3s ease;
+  display:inline-block;
+  border-radius:10px;
+}
+
+a.button:hover {
+  background-color: #ffab00;
+}
+
 #menu {
   position:fixed;
   z-index: 9001;
@@ -103,6 +118,26 @@ body {
     padding-top:0;
     padding-bottom:0px;
   }
+}
+
+
+/* DirectoryPicker */
+.DirectoryPicker {
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
+  font-size:16px;
+  background-color:#FFF;
+  padding:20px;
+  width:400px;
+  margin: 20px auto;
+}
+
+.DirectoryPicker h2 {
+  margin:0;
+}
+
+.DirectoryPicker p {
+  text-align:left;
+  padding:20px;
 }
 
 
@@ -355,7 +390,7 @@ body {
   transition: width ease 0.2s;
   overflow:hidden;
   z-index:9000;
-  -webkit-transform: translateZ(0);
+  /*-webkit-transform: translateZ(0);*/
 }
 
 .ActionButton .button {
