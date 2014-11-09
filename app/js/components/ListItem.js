@@ -18,7 +18,7 @@ Truss.init(function(components) {
       "song": "h2",
       "album": ".album",
       "artist": ".artist",
-      "id": "$:src";
+      "id": "$:id"
     },
     "events": {
       ".upvote:click": function() {
