@@ -10,12 +10,12 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
-http.listen(process.env.PORT||3002, function(){
-  console.log('listening on port '+ process.env.PORT||3002);
+http.listen(process.env.PORT||3005, function(){
+  console.log('listening on port '+ process.env.PORT||3005);
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  window.console.log('a user connected');
 }); 
 
 var walk = function(dir, match, done) {
