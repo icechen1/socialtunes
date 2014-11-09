@@ -5,6 +5,7 @@ var fs = require('fs');
 var music = [];
 var io = require("socket.io")(http);
 var id3 = require('id3js');
+var musicPath = "/home/icechen1/Downloads/";
 
 app.use(express.static(__dirname + '/app'));
 
@@ -72,5 +73,9 @@ var addMusic = function(err, musicfile){
   });
 }
 
+var setDirectiory= function(dir){
+  musicPath = dir;
+}
+
 //walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
-walk("/home/icechen1/Downloads/", /.mp3$/, addMusic);
+walk(musicPath, /.mp3$/, addMusic);
