@@ -17,7 +17,8 @@ Truss.init(function(components) {
       "art": "img:src",
       "song": "h2",
       "album": ".album",
-      "artist": ".artist"
+      "artist": ".artist",
+      "id": "$:src";
     },
     "events": {
       ".upvote:click": function() {
@@ -28,8 +29,10 @@ Truss.init(function(components) {
         }
         if (upvote.className.indexOf("selected") == -1) {
           upvote.classList.add("selected");
+          components.socket.emit("vote_up", this.property("id"));
         } else {
           upvote.classList.remove("selected");
+          components.socket.emit("vote_cancel", this.property("id"));
         }
       },
       ".downvote:click": function() {
@@ -40,11 +43,14 @@ Truss.init(function(components) {
         }
         if (downvote.className.indexOf("selected") == -1) {
           downvote.classList.add("selected");
+          components.socket.emit("vote_down", this.property("id"));
         } else {
           downvote.classList.remove("selected");
+          components.socket.emit("vote_cancel", this.property("id"));
         }
       },
       "init": function() {
+        this.setProperty("id", Math.round(Math.random()*100000));
         var t = setTimeout(function() {
           this.element.classList.remove("animated");
         }.bind(this), 1000);
