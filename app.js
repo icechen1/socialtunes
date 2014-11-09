@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var fs = require('fs');
-
+var io = require("socket.io")(http);
 
 app.use(express.static(__dirname + '/app'));
 
@@ -10,9 +10,13 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
-http.listen(process.env.PORT||3000, function(){
-  console.log('listening on port '+ process.env.PORT||3000);
+http.listen(process.env.PORT||3002, function(){
+  console.log('listening on port '+ process.env.PORT||3002);
 });
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+}); 
 
 var walk = function(dir, match, done) {
   var results = [];
