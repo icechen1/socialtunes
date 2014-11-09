@@ -2,7 +2,7 @@
   "name": "Socialtunes",
   "version": "1.0.0",
   "description": "",
-  "main": "app/index.html",
+  "main": "app/admin.html",
   "node-main": "app.js",
   "scripts": {
     "start": "nodewebkit"

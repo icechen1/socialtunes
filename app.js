@@ -72,4 +72,4 @@ var addMusic = function(err, musicfile){
   });
 }
 
-walk("/home/icechen1/Downloads/", /.mp3$/, addMusic);
+//walk("/home/icechen1/Downloads/", /.mp3$/, addMusic);
