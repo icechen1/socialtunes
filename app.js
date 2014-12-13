@@ -6,12 +6,33 @@ var music = [];
 var io = require("socket.io")(http);
 var id3 = require('id3js');
 var musicPath = "/home/icechen1/Downloads/";
+var Datastore = require('nedb');
+var path = require('path');
+// Load native UI library
+//var gui = require('nw.gui');
 
 app.use(express.static(__dirname + '/app'));
 
 app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
+
+/**
+ * Set up database using NeDB
+ * See also https://github.com/louischatriot/nedb
+ */
+
+// Type 4: Persistent datastore for a Node Webkit app
+// For example on Linux, the datafile will be ~/.config/nwtest/nedb-data/something.db
+// path.join(gui.App.dataPath, 'index.db')
+var db = {};
+db.music = new Datastore({ filename:'index.db', autoload: true  });
+db.settings = new Datastore({ filename:'settings.db', autoload: true  });
+
+// You need to load each database (here we do it asynchronously)
+
+db.music.loadDatabase();
+db.settings.loadDatabase();
 
 http.listen(process.env.PORT||3005, function(){
   console.log('listening on port '+ process.env.PORT||3005);
