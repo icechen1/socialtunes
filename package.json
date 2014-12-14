@@ -34,6 +34,7 @@
     "nedb": "^1.0.0",
     "nodewebkit": "~0.10.5",
     "socket.io": "~1.2.0",
-    "sqlite3": "^3.0.4"
+    "sqlite3": "^3.0.4",
+    "node-find-files": "*"
   }
 }

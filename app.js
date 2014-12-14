@@ -8,6 +8,7 @@ var id3 = require('id3js');
 var musicPath = "/home/icechen1/Downloads/";
 var Datastore = require('nedb');
 var path = require('path');
+var node_find_files = require("node-find-files");
 // Load native UI library
 //var gui = require('nw.gui');
 
@@ -58,37 +59,37 @@ io.on('connection', function(socket){
     });
 }); 
 
-var walk = function(dir, match, done) {
-  fs.readdir(dir, function(err, list) {
-    if (err) return done(err);
-    else{
-      var pending = list.length;
-      if (!pending) return //window.console.log("No files here in " + dir + "!");
-      list.forEach(function(file) {
-        file = dir + '/' + file;
-        fs.stat(file, function(err, stat) {
-          if (err){
-            return done(err);
-          }
-          else{
-            if (stat && stat.isDirectory()) {
-              walk(file, match, addMusic);
-                //function(err, res) {
-                //results = results.concat(res);
-                //if (!--pending) done(null, results);
-              //});
-            } else {
-              if (match.test(file)) {
-                done(null, file);
-              }
-              //if (!--pending) done(null, results);
-            }
-          }
-        });
-      });
-    }
-  });
-};
+// var walk = function(dir, match, done) {
+//   fs.readdir(dir, function(err, list) {
+//     if (err) return done(err);
+//     else{
+//       var pending = list.length;
+//       if (!pending) return //window.console.log("No files here in " + dir + "!");
+//       list.forEach(function(file) {
+//         file = dir + '/' + file;
+//         fs.stat(file, function(err, stat) {
+//           if (err){
+//             return done(err);
+//           }
+//           else{
+//             if (stat && stat.isDirectory()) {
+//               walk(file, match, addMusic);
+//                 //function(err, res) {
+//                 //results = results.concat(res);
+//                 //if (!--pending) done(null, results);
+//               //});
+//             } else {
+//               if (match.test(file)) {
+//                 done(null, file);
+//               }
+//               //if (!--pending) done(null, results);
+//             }
+//           }
+//         });
+//       });
+//     }
+//   });
+// };
 
 var addMusic = function(err, musicfile){
   if (err) window.console.log(err);
@@ -98,13 +99,35 @@ var addMusic = function(err, musicfile){
     //window.console.log(musicfile);
     id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
         if (err) throw err;
-        window.console.log(tags.title);
+        window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
     });
   }
 };
+
 this.setDirectory = function(dir){
   musicPath = dir;
-  walk(musicPath, /.mp3$/, addMusic);
+  // walk(musicPath, /.mp3$/, addMusic);
+  var finder = new node_find_files({
+    rootFolder : musicPath,
+    filterFunction : function (path, stat) {
+        return /.mp3$/i.test(path);
+    }
+  });
+
+  finder.on("match", function(strPath, stat) {
+      window.console.log(strPath + " - " + stat.mtime);
+      addMusic(null, strPath);
+  })
+  finder.on("complete", function() {
+      window.console.log("Finished")
+  })
+  finder.on("patherror", function(err, strPath) {
+      window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
+  })
+  finder.on("error", function(err) {
+      window.console.log("Global Error " + err);
+  })
+  finder.startSearch();
 };
 
 //walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
