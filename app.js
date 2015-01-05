@@ -41,7 +41,7 @@ http.listen(process.env.PORT||3005, function(){
 
 io.on('connection', function(socket){
     window.console.log('a user connected');
-    
+
     socket.on('new_queue', function(msg){
         socket.emit('new_queue', msg);
     });
@@ -49,15 +49,15 @@ io.on('connection', function(socket){
     socket.on('vote_up', function(msg){
         socket.emit('vote_up', msg);
     });
-    
+
     socket.on('vote_down', function(msg){
         socket.emit('vote_down', msg);
     });
-    
+
     socket.on('vote_cancel', function(msg){
         socket.emit('vote_cancel', msg);
     });
-}); 
+});
 
 // var walk = function(dir, match, done) {
 //   fs.readdir(dir, function(err, list) {
@@ -99,7 +99,9 @@ var addMusic = function(err, musicfile){
     //window.console.log(musicfile);
     id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
         if (err) throw err;
-        window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
+        if (tags.v2.image) {
+            window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
+        }
     });
   }
 };

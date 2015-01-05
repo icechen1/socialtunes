@@ -19,12 +19,13 @@
     </div>
     <div id="musicApp">
       <div class="DirectoryPicker">
-      <h2>Choose a directory</h2>
+        <h2>Choose a directory</h2>
         <p>We'll search it and its subfolders for mp3 files to add to SocialTunes.</p>
         <input type="file" nwdirectory style="display:none;" class="fileDialog" />
-        <a class="button picker">Pick directory</a>
+        <a class="button picker" id="dir">Pick directory</a>
         <a class="button submit">Submit</a>
       </div>
+      <audio id="player"></audio>
     </div>
   </body>
 </html>
