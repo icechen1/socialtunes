@@ -101,7 +101,24 @@ var addMusic = function(err, musicfile){
 
         if (err) throw err;
         window.console.log(tags);
-        db.music.insert(tags);
+
+
+
+
+        /*
+         *
+         *
+         * Keep working on this
+         *
+         *
+         */
+        var song = {
+            title: tags.title || "Unknown",
+            album: tags.album || "Unknown Album",
+            artist: tags.artist || "Unknown Artist",
+            url: musicfile
+        };
+        db.music.insert(song);
 
         if (tags.v2.image) {
             window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
