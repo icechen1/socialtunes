@@ -98,7 +98,11 @@ var addMusic = function(err, musicfile){
     //window.console.log("Pushed");
     //window.console.log(musicfile);
     id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
+
         if (err) throw err;
+        window.console.log(tags);
+        db.music.insert(tags);
+
         if (tags.v2.image) {
             window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
         }
@@ -117,7 +121,6 @@ this.setDirectory = function(dir){
   });
 
   finder.on("match", function(strPath, stat) {
-      window.console.log(strPath + " - " + stat.mtime);
       addMusic(null, strPath);
   })
   finder.on("complete", function() {
