@@ -6,9 +6,12 @@ var music = [];
 var io = require("socket.io")(http);
 var id3 = require('id3js');
 var musicPath = "/home/icechen1/Downloads/";
-var Datastore = require('nedb');
+
 var path = require('path');
 var node_find_files = require("node-find-files");
+
+var db = require("./modules/DatabaseManager.js");
+
 // Load native UI library
 //var gui = require('nw.gui');
 
@@ -18,22 +21,8 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
-/**
- * Set up database using NeDB
- * See also https://github.com/louischatriot/nedb
- */
+db.init(); //initialize the database
 
-// Type 4: Persistent datastore for a Node Webkit app
-// For example on Linux, the datafile will be ~/.config/nwtest/nedb-data/something.db
-// path.join(gui.App.dataPath, 'index.db')
-var db = {};
-db.music = new Datastore({ filename:'index.db', autoload: true  });
-db.settings = new Datastore({ filename:'settings.db', autoload: true  });
-
-// You need to load each database (here we do it asynchronously)
-
-db.music.loadDatabase();
-db.settings.loadDatabase();
 
 http.listen(process.env.PORT||3005, function(){
   console.log('listening on port '+ process.env.PORT||3005);
@@ -118,13 +107,8 @@ var addMusic = function(err, musicfile){
             artist: tags.artist || "Unknown Artist",
             url: musicfile
         };
-        console.log(song)
-        db.music.insert(song, function (err, newDoc) {   // Callback is optional
-  // newDoc is the newly inserted document, including its _id
-  // newDoc has no key called notToBeSaved since its value was undefined
-            //console.log(err)
-            //console.log(newDoc)
-});
+        //console.log(song)
+        db.saveSong(song);
 
         if (tags.v2.image) {
             window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
@@ -134,23 +118,7 @@ var addMusic = function(err, musicfile){
   }
 };
 
-/**
- * A method to query existing songs
- * Currently returns ALL entries in the database
- *
- * Model:
- * - _id (unique)
- * - album
- * - artist
- * - title
- * - url (ABSOLUTE path to the music file)
- */
-var querySong = function(){
-    db.music.find({}, function (err, docs) {
-        //probably should add some conditions later(limit, sort by artist)
-        return docs;
-    });
-};
+
 
 this.setDirectory = function(dir){
   musicPath = dir;
@@ -167,7 +135,7 @@ this.setDirectory = function(dir){
   })
   finder.on("complete", function() {
       window.console.log("Finished");
-      querySong();
+      db.querySong();
   })
   finder.on("patherror", function(err, strPath) {
       window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
