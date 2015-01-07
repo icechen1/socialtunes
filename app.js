@@ -18,7 +18,7 @@ var db = require("./modules/DatabaseManager.js");
 app.use(express.static(__dirname + '/app'));
 
 app.get('/', function(req, res){
-  res.sendfile('app/index.html');
+    res.sendfile('app/index.html');
 });
 
 //API Endpoint to retrieve all songs
@@ -33,7 +33,7 @@ db.init(); //initialize the database
 
 
 http.listen(process.env.PORT||3005, function(){
-  console.log('listening on port '+ process.env.PORT||3005);
+    console.log('listening on port '+ process.env.PORT||3005);
 });
 
 io.on('connection', function(socket){
@@ -89,69 +89,71 @@ io.on('connection', function(socket){
 // };
 
 var addMusic = function(err, musicfile){
-  if (err) window.console.log(err);
-  else{
-    music.push(musicfile);
-    //window.console.log("Pushed");
-    //window.console.log(musicfile);
-    id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
+    if (err) window.console.log(err);
+    else{
+        music.push(musicfile);
+        //window.console.log("Pushed");
+        //window.console.log(musicfile);
+        id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
 
-        if (err) throw err;
-        //window.console.log(tags);
-
-
+            if (err) throw err;
+            //window.console.log(tags);
 
 
-        /*
+
+
+            /*
          *
          *
          * Keep working on this
          *
          *
          */
-        var song = {
-            title: tags.title || "Unknown",
-            album: tags.album || "Unknown Album",
-            artist: tags.artist || "Unknown Artist",
-            url: musicfile
-        };
-        //console.log(song)
-        db.saveSong(song);
+            var song = {
+                title: tags.title || "Unknown",
+                album: tags.album || "Unknown Album",
+                artist: tags.artist || "Unknown Artist",
+                url: musicfile
+            };
+            //console.log(song)
+            db.saveSong(song);
 
-        if (tags.v2.image) {
-            window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
-        }
+            if (tags.v2.image) {
+                window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
+            }
 
-    });
-  }
+        });
+    }
 };
 
 
 
 this.setDirectory = function(dir){
-  musicPath = dir;
-  // walk(musicPath, /.mp3$/, addMusic);
-  var finder = new node_find_files({
-    rootFolder : musicPath,
-    filterFunction : function (path, stat) {
-        return /.mp3$/i.test(path);
-    }
-  });
+    //Clear the old database index
+    db.clearDb();
+    musicPath = dir;
+    // walk(musicPath, /.mp3$/, addMusic);
+    var finder = new node_find_files({
+        rootFolder : musicPath,
+        filterFunction : function (path, stat) {
+            return /.mp3$/i.test(path);
+        }
+    });
 
-  finder.on("match", function(strPath, stat) {
-      addMusic(null, strPath);
-  })
-  finder.on("complete", function() {
-      window.console.log("Finished");
-      //db.querySong();
-  })
-  finder.on("patherror", function(err, strPath) {
-      window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
-  })
-  finder.on("error", function(err) {
-      window.console.log("Global Error " + err);
-  })
-  finder.startSearch();
+    finder.on("match", function(strPath, stat) {
+        addMusic(null, strPath);
+    })
+    finder.on("complete", function() {
+        window.console.log("Finished");
+        //db.querySong();
+    })
+    finder.on("patherror", function(err, strPath) {
+        window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
+    })
+    finder.on("error", function(err) {
+        window.console.log("Global Error " + err);
+    })
+    finder.startSearch();
 };
 
 //walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);

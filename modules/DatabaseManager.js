@@ -45,7 +45,16 @@ module.exports.querySong = function(callback){
  * Save a song
  */
 module.exports.saveSong = function(song){
-db.music.insert(song, function (err, newDoc) {
+    db.music.insert(song, function (err, newDoc) {
 
     });
 };
+
+//Deletes everything
+module.exports.clearDb = function(){
+    db.music.remove({ }, { multi: true }, function (err, numRemoved) {
+        db.music.loadDatabase(function (err) {
+            // done
+        });
+    });
+}
