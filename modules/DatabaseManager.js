@@ -23,7 +23,7 @@ module.exports.init = function(){
 
 
 /**
- * A method to query existing songs
+ * A method to query existing songs through a callback
  * Currently returns ALL entries in the database
  *
  * Model:
@@ -33,11 +33,11 @@ module.exports.init = function(){
  * - title
  * - url (ABSOLUTE path to the music file)
  */
-module.exports.querySong = function(){
+module.exports.querySong = function(callback){
     db.music.find({}, function (err, docs) {
         //probably should add some conditions later(limit, sort by artist)
-        console.log(docs);
-        return docs;
+        //console.log(docs);
+        callback(docs);
     });
 };
 

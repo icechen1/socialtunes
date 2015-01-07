@@ -21,6 +21,14 @@ app.get('/', function(req, res){
   res.sendfile('app/index.html');
 });
 
+//API Endpoint to retrieve all songs
+app.get('/api/querySongs', function(req, res){
+    db.querySong(function(docs){
+        res.send(docs);
+    })
+
+});
+
 db.init(); //initialize the database
 
 
@@ -135,7 +143,7 @@ this.setDirectory = function(dir){
   })
   finder.on("complete", function() {
       window.console.log("Finished");
-      db.querySong();
+      //db.querySong();
   })
   finder.on("patherror", function(err, strPath) {
       window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
