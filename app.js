@@ -100,7 +100,7 @@ var addMusic = function(err, musicfile){
     id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
 
         if (err) throw err;
-        window.console.log(tags);
+        //window.console.log(tags);
 
 
 
@@ -118,13 +118,38 @@ var addMusic = function(err, musicfile){
             artist: tags.artist || "Unknown Artist",
             url: musicfile
         };
-        db.music.insert(song);
+        console.log(song)
+        db.music.insert(song, function (err, newDoc) {   // Callback is optional
+  // newDoc is the newly inserted document, including its _id
+  // newDoc has no key called notToBeSaved since its value was undefined
+            //console.log(err)
+            //console.log(newDoc)
+});
 
         if (tags.v2.image) {
             window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
         }
+
     });
   }
+};
+
+/**
+ * A method to query existing songs
+ * Currently returns ALL entries in the database
+ *
+ * Model:
+ * - _id (unique)
+ * - album
+ * - artist
+ * - title
+ * - url (ABSOLUTE path to the music file)
+ */
+var querySong = function(){
+    db.music.find({}, function (err, docs) {
+        //probably should add some conditions later(limit, sort by artist)
+        return docs;
+    });
 };
 
 this.setDirectory = function(dir){
@@ -141,7 +166,8 @@ this.setDirectory = function(dir){
       addMusic(null, strPath);
   })
   finder.on("complete", function() {
-      window.console.log("Finished")
+      window.console.log("Finished");
+      querySong();
   })
   finder.on("patherror", function(err, strPath) {
       window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
