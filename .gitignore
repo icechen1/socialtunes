@@ -1,3 +1,6 @@
+index.db
+settings.db
+
 lib-cov
 *.seed
 *.log

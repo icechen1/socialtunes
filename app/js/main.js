@@ -1,5 +1,32 @@
 var components = components || {};
 
+function ajax(method, url, callback) {
+    var xmlhttp;
+
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 ) {
+           if(xmlhttp.status == 200){
+               callback(xmlhttp.responseText);
+           } else if(xmlhttp.status == 400) {
+              console.error('There was an error 400');
+           } else {
+               console.error('something else other than 200 was returned');
+           }
+        }
+    }
+
+    xmlhttp.open(method, url, true);
+    xmlhttp.send();
+}
+
 Truss.init(function(components) {
 
   //Library
@@ -13,44 +40,22 @@ Truss.init(function(components) {
             "name": "Songs",
             "icon": "<i class='fa fa-chevron-right'></i>",
             "open": function() {
-              components.l.property("items")[1].show();
+              ajax("GET", "api/querysongs/", function(response) {
+                items = JSON.parse(response);
+                
+                components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
+                
+                Array.prototype.forEach.call(items, function(item) {
+                  components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
+                    "art": "images/album.jpg",
+                    "song": item.title,
+                    "album": item.album,
+                    "artist": item.artist
+                  }));
+                });
+                components.l.property("items")[1].show();
+              });
             }
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
           })
         ]
       }),
@@ -63,7 +68,7 @@ Truss.init(function(components) {
               components.l.property("items")[0].show();
             }
           }),
-          components.LibraryItem.new({
+          /* components.LibraryItem.new({
             "art": "images/album.jpg",
             "song": "Song Name",
             "album": "Album Name",
@@ -80,7 +85,7 @@ Truss.init(function(components) {
             "song": "Song Name",
             "album": "Album Name",
             "artist": "Artist Name"
-          })
+          }) */
         ]
       })
     ]
