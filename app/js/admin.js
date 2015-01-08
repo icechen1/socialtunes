@@ -46,10 +46,10 @@ Truss.init(function(components) {
 
   var queue = [
     {
-      "url": "01 Disintegration.wav"
+      "url": "hooked on a feeling bottles.mp3"
     },
     {
-      "url": "hooked on a feeling bottles.mp3"
+      "url": "01 Disintegration.wav"
     }
   ];
 
