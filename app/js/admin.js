@@ -1,5 +1,25 @@
 var components = components || {};
 
+function AudioPlayer() {
+  var current = new Audio();
+  
+  var songFinishedCallback = function() {};
+
+  this.onSongFinished = function(callback) {
+    songFinishedCallback = callback;
+  };
+
+  current.addEventListener("ended", function() {
+    songFinishedCallback();
+  });
+
+  this.setSong = function(song) {
+    current.src = song.url;
+    current.play();
+  };
+}
+
+
 Truss.init(function(components) {
   var DirectoryPicker = document.querySelector(".DirectoryPicker");
 
@@ -18,5 +38,29 @@ Truss.init(function(components) {
   });
 
   var Player = document.getElementById("player");
+  
+  
+  
+  
+  var player = new AudioPlayer();
+
+  var queue = [
+    {
+      "url": "01 Disintegration.wav"
+    },
+    {
+      "url": "hooked on a feeling bottles.mp3"
+    }
+  ];
+
+  player.onSongFinished(function() {
+    var newSong = queue.shift();
+
+    if (newSong) {
+      player.setSong(newSong);
+    }
+  });
+
+  player.setSong(queue[0]);
 
 }, components);
