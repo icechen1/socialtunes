@@ -2,7 +2,7 @@ var components = components || {};
 
 function AudioPlayer() {
   var current = new Audio();
-  
+
   var songFinishedCallback = function() {};
 
   this.onSongFinished = function(callback) {
@@ -11,6 +11,10 @@ function AudioPlayer() {
 
   current.addEventListener("ended", function() {
     songFinishedCallback();
+  });
+
+  current.addEventListener("error", function() {
+    console.error(current.error);
   });
 
   this.setSong = function(song) {
@@ -38,10 +42,10 @@ Truss.init(function(components) {
   });
 
   var Player = document.getElementById("player");
-  
-  
-  
-  
+
+
+
+
   var player = new AudioPlayer();
 
   var queue = [
