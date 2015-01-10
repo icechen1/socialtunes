@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var fs = require('fs');
-var music = [];
 var io = require("socket.io")(http);
 var id3 = require('id3js');
 var musicPath = "/home/icechen1/Downloads/";
@@ -41,6 +40,8 @@ io.on('connection', function(socket){
 
     socket.on('new_queue', function(msg){
         socket.emit('new_queue', msg);
+        window.console.log(msg);
+        window.queue.push({url:msg}); //add to queue
     });
 
     socket.on('vote_up', function(msg){
@@ -56,38 +57,6 @@ io.on('connection', function(socket){
     });
 });
 
-// var walk = function(dir, match, done) {
-//   fs.readdir(dir, function(err, list) {
-//     if (err) return done(err);
-//     else{
-//       var pending = list.length;
-//       if (!pending) return //window.console.log("No files here in " + dir + "!");
-//       list.forEach(function(file) {
-//         file = dir + '/' + file;
-//         fs.stat(file, function(err, stat) {
-//           if (err){
-//             return done(err);
-//           }
-//           else{
-//             if (stat && stat.isDirectory()) {
-//               walk(file, match, addMusic);
-//                 //function(err, res) {
-//                 //results = results.concat(res);
-//                 //if (!--pending) done(null, results);
-//               //});
-//             } else {
-//               if (match.test(file)) {
-//                 done(null, file);
-//               }
-//               //if (!--pending) done(null, results);
-//             }
-//           }
-//         });
-//       });
-//     }
-//   });
-// };
-
 var addMusic = function(err, musicfile){
     if (err) window.console.log(err);
     else{
@@ -95,19 +64,10 @@ var addMusic = function(err, musicfile){
         //window.console.log("Pushed");
         //window.console.log(musicfile);
         id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
-
             if (err) throw err;
             //window.console.log(tags);
-
-
-
-
         /*
-         *
-         *
          * Keep working on this
-         *
-         *
          */
             var song = {
                 title: tags.title || "Unknown",
@@ -125,8 +85,6 @@ var addMusic = function(err, musicfile){
         });
     }
 };
-
-
 
 this.setDirectory = function(dir){
     //Clear the old database index

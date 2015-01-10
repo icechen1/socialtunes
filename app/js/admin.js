@@ -50,7 +50,7 @@ Truss.init(function(components) {
 
   var queue = [
     {
-      "url": "hooked on a feeling bottles.mp3"
+      "url": "c:\\Users\\YuChen\\Downloads\\hooked on a feeling bottles (4).mp3"
     },
     {
       "url": "01 Disintegration.wav"
