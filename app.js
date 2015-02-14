@@ -10,6 +10,7 @@ var path = require('path');
 var node_find_files = require("node-find-files");
 
 var db = require("./modules/DatabaseManager.js");
+var music = [];
 
 // Load native UI library
 //var gui = require('nw.gui');

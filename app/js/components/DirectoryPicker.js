@@ -43,6 +43,9 @@ Truss.init(function(components) {
       },
       "$picker:click": function() {
         this.element.querySelector("input").click();
+        // if (typeof this.property("click") == "function") {
+        //   this.property("click")();
+        // }
       }
     }
   });
