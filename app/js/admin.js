@@ -80,7 +80,7 @@ Truss.init(function(components) {
             "name": "Songs",
             "icon": "<i class='fa fa-chevron-right'></i>",
             "open": function() {
-              ajax("GET", "api/querysongs/", function(response) {
+              ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
                 items = JSON.parse(response);
                 
                 components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
@@ -130,7 +130,7 @@ Truss.init(function(components) {
       })
     ]
   });
-  document.getElementById("musicApp").appendChild(components.l.element);
+  document.getElementById("library").appendChild(components.l.element);
   
   //Queue
   components.q = components.ListView.new({
@@ -145,8 +145,36 @@ Truss.init(function(components) {
     ],
     "hide": true
   });
-  document.getElementById("musicApp").appendChild(components.q.element);
+  document.getElementById("library").appendChild(components.q.element);
   
+  //Directory Picker button
+  components.dirb = components.MenuButton.new({
+    "icon": "<i class='fa fa-eject'></i>",
+    "open": function() {
+      if (!components.DirPicker.property("open")) {
+        components.l.hide();
+        components.q.hide();
+        components.qb.hide();
+        components.playerBtn.hide();
+        components.DirPicker.show();
+        this.setProperty("icon", "<i class='fa fa-arrow-left'></i>");
+        this.element.classList.add("toggled");
+        document.getElementById("library").style.display = "none";
+        // document.getElementById("controls").style.display = "none";
+      } else {
+        document.getElementById("library").style.display = "block";
+        // document.getElementById("controls").style.display = "block";
+        components.l.show();
+        components.qb.show();
+        components.playerBtn.show();
+        components.DirPicker.hide();
+        this.setProperty("icon", "<i class='fa fa-eject'></i>");
+        this.element.classList.remove("toggled");
+      }
+    }
+  });
+  document.getElementById("menu").appendChild(components.dirb.element);
+
   //Queue Menu button
   components.qb = components.MenuButton.new({
     "icon": "<i class='fa fa-list'></i>",
@@ -172,25 +200,29 @@ Truss.init(function(components) {
     "artist": "David Hasselhoff",
     "art": "images/hasselhoff.jpg"
   });
-  document.body.appendChild(components.playerBtn.element);
+  document.getElementById("controls").appendChild(components.playerBtn.element);
 
   components.DirPicker = components.DirectoryPicker.new({
     "message": "",
     "click": function() {
+      document.getElementById("library").style.display = "block";
+      // document.getElementById("controls").style.display = "block";
       components.l.show();
-      components.q.show();
       components.qb.show();
+      components.dirb.show();
       components.playerBtn.show();
       components.DirPicker.hide();
     }
   });
 
-  document.getElementById("musicApp").appendChild(components.DirPicker.element);
+  document.getElementById("dirPicker").appendChild(components.DirPicker.element);
 
+  document.getElementById("library").style.display = "none";
+  // document.getElementById("controls").style.display = "none";
   components.l.hide();
-  components.q.hide();
   components.qb.hide();
-  components.playerBtn.hide();
+  components.dirb.hide();
+  // components.playerBtn.hide();
 
   var Player = document.getElementById("player");
 
