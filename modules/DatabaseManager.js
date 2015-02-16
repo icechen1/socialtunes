@@ -43,6 +43,14 @@ module.exports.querySong = function(callback){
     });
 };
 
+module.exports.querySongByID = function(id,callback){
+    db.music.find({_id:id}, function (err, docs) {
+        //probably should add some conditions later(limit, sort by artist)
+        //console.log(docs);
+        callback(docs);
+    });
+};
+
 /*
  * Save a song
  */

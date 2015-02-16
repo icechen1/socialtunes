@@ -10,7 +10,8 @@ var path = require('path');
 var node_find_files = require("node-find-files");
 
 var db = require("./modules/DatabaseManager.js");
-var music = [];
+
+var queue =[];
 
 // Load native UI library
 //var gui = require('nw.gui');
@@ -41,10 +42,12 @@ io.on('connection', function(socket){
 
     socket.on('new_queue', function(msg){
         socket.emit('new_queue', msg);
-        //AMI DOING THIS RITE???
-        db.addSong(msg);
-        window.console.log(msg);
-        //window.queue.push({url:msg}); //add to queue
+        //db.addSong(msg);
+        //window.console.log(msg);
+        db.querySongByID(msg, function(doc){
+            queue.push(msg); //push the whole song document to the array
+            window.console.log(queue);
+        });
     });
 
     socket.on('vote_up', function(msg){
