@@ -137,4 +137,9 @@ Truss.init(function(components) {
   components.socket.on("vote_updated", function(msg) {
     console.log(msg);
   });
+
+  components.socket.on("new_queue", function(msg){
+    console.log("Received new song.");
+    console.log(msg);
+  });
 }, components);

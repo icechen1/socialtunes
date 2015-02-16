@@ -14,11 +14,13 @@ module.exports.init = function(){
 
     db.music = new Datastore({ filename:'index.db', autoload: true  });
     db.settings = new Datastore({ filename:'settings.db', autoload: true  });
+    db.queue = new Datastore({filename:'queue.db', autoload:true });
 
     // You need to load each database (here we do it asynchronously)
 
     db.music.loadDatabase();
     db.settings.loadDatabase();
+    db.queue.loadDatabase();
 }
 
 
@@ -46,6 +48,15 @@ module.exports.querySong = function(callback){
  */
 module.exports.saveSong = function(song){
     db.music.insert(song, function (err, newDoc) {
+
+    });
+};
+
+/*
+ * Add a song
+ */
+module.exports.addSong = function(song){
+    db.queue.insert(song, function (err, newDoc) {
 
     });
 };

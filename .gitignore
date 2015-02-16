@@ -1,5 +1,6 @@
 index.db
 settings.db
+queue.db
 
 lib-cov
 *.seed

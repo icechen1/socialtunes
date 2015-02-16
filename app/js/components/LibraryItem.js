@@ -35,6 +35,10 @@ Truss.init(function(components) {
             "artist": this.property("artist")
           }));
           components.q.addProperty("items", this.property("queueItem"));
+          //this is not working
+          // process.mainModule.exports.addSongToQueue(this.property("properties"));
+          console.log(this.property("properties"));
+          components.socket.emit("new_queue", this.property("properties"));
         } else {
           this.setProperty("icon", "<i class='fa fa-plus'>");
           this.setProperty("added", false);

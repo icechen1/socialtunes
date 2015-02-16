@@ -41,8 +41,10 @@ io.on('connection', function(socket){
 
     socket.on('new_queue', function(msg){
         socket.emit('new_queue', msg);
+        //AMI DOING THIS RITE???
+        db.addSong(msg);
         window.console.log(msg);
-        window.queue.push({url:msg}); //add to queue
+        //window.queue.push({url:msg}); //add to queue
     });
 
     socket.on('vote_up', function(msg){
@@ -114,6 +116,12 @@ this.setDirectory = function(dir){
     })
     finder.startSearch();
 };
+
+
+//This code is *supposed* to add a song to the db
+this.addSongToQueue = function(song){
+    db.addSong(song);
+}
 
 //walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);
 
