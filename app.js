@@ -66,9 +66,6 @@ io.on('connection', function(socket){
 var addMusic = function(err, musicfile){
     if (err) window.console.log(err);
     else{
-        music.push(musicfile);
-        //window.console.log("Pushed");
-        //window.console.log(musicfile);
         id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
             if (err) throw err;
             //window.console.log(tags);
