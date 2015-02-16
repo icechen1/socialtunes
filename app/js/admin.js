@@ -84,7 +84,7 @@ Truss.init(function(components) {
                 items = JSON.parse(response);
                 
                 components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
-                
+                var count = 1;
                 Array.prototype.forEach.call(items, function(item) {
                   components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
                     "art": "images/album.jpg",
@@ -92,6 +92,8 @@ Truss.init(function(components) {
                     "album": item.album,
                     "artist": item.artist
                   }));
+                  components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
+                  console.log(components.l.property("items")[1].property("items")[count-1].property("id"));
                 });
                 components.l.property("items")[1].show();
               });

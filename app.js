@@ -11,7 +11,6 @@ var node_find_files = require("node-find-files");
 
 var db = require("./modules/DatabaseManager.js");
 
-var music = [];
 var queue =[];
 
 // Load native UI library
