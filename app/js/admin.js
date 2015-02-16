@@ -222,7 +222,7 @@ Truss.init(function(components) {
   components.l.hide();
   components.qb.hide();
   components.dirb.hide();
-  // components.playerBtn.hide();
+  components.playerBtn.hide();
 
   var Player = document.getElementById("player");
 

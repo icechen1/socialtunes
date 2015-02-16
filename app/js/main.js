@@ -50,7 +50,8 @@ Truss.init(function(components) {
                     "art": "images/album.jpg",
                     "song": item.title,
                     "album": item.album,
-                    "artist": item.artist
+                    "artist": item.artist,
+                    "id": item.ID
                   }));
                 });
                 components.l.property("items")[1].show();
