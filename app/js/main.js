@@ -18,10 +18,10 @@ function ajax(method, url, callback) {
            } else if(xmlhttp.status == 400) {
               console.error('There was an error 400');
            } else {
-               console.error('something else other than 200 was returned');
+              console.error('something else other than 200 was returned');
            }
         }
-    }
+    } 
 
     xmlhttp.open(method, url, true);
     xmlhttp.send();
@@ -44,7 +44,7 @@ Truss.init(function(components) {
                 items = JSON.parse(response);
                 
                 components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
-                var count = 0;
+                var count = 1;
                 Array.prototype.forEach.call(items, function(item) {
                   components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
                     "art": "images/album.jpg",
@@ -53,9 +53,12 @@ Truss.init(function(components) {
                     "artist": item.artist
                   }));
                   components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
-                  console.log(components.l.property("items")[1].property("items")[count-1].property("id"));
                 });
-                console.log(components.l.property("items")[1].property("items"));
+                // var i;
+                // for (i = 0; i < components.l.property("items")[1].property("items").length; i++){
+                //   console.log(components.l.property("items")[1].property("items")[i].properties());
+                //   console.log(components.l.property("items")[1].property("items")[i].property("id"));
+                // }
                 components.l.property("items")[1].show();
               });
             }
@@ -144,5 +147,12 @@ Truss.init(function(components) {
   components.socket.on("new_queue", function(msg){
     console.log("Received new song.");
     console.log(msg);
+    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item) {
+      if (item.property("id") == msg){
+        if (!item.property("added")){
+          item.triggerEvent("$:click");
+        }
+      }
+    });
   });
 }, components);

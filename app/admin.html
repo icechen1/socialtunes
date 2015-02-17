@@ -6,8 +6,14 @@
     <link href='open-sans.css' rel='stylesheet' type='text/css'>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- wtf is going on, dunno how to add sockets -->
+    <script src="http://localhost:3005/socket.io/socket.io.js"></script>
+    <script src ="/socket.io/socket.io.js"></script>
     
     <script type="text/javascript" src="js/Truss/truss.js"></script>
+    <script type="text/javascript" src="js/components/Socket.js"></script>
+
     <script type="text/javascript" src="js/components/DirectoryPicker.js"></script>
     <script type="text/javascript" src="js/components/ActionButton.js"></script>
     <script type="text/javascript" src="js/components/ListItem.js"></script>
@@ -19,6 +25,9 @@
     <script type="text/javascript" src="js/components/MenuButton.js"></script>
     
     <script type="text/javascript" src="js/admin.js"></script>
+    <script>
+      var socket = io();
+    </script>
     
     <title>SocialTunes</title>
   </head>

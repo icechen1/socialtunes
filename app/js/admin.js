@@ -93,8 +93,12 @@ Truss.init(function(components) {
                     "artist": item.artist
                   }));
                   components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
-                  console.log(components.l.property("items")[1].property("items")[count-1].property("id"));
                 });
+                // var i;
+                // for (i = 0; i < components.l.property("items")[1].property("items").length; i++){
+                //   console.log(components.l.property("items")[1].property("items")[i].properties());
+                //   console.log(components.l.property("items")[1].property("items")[i].property("id"));
+                // }
                 components.l.property("items")[1].show();
               });
             }
@@ -249,4 +253,19 @@ Truss.init(function(components) {
 
   player.setSong(queue[0]);
 
+  components.socket.on("vote_updated", function(msg) {
+    console.log(msg);
+  });
+
+  components.socket.on("new_queue", function(msg){
+    console.log("Received new song.");
+    console.log(msg);
+    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item) {
+      if (item.property("id") == msg){
+        if (!item.property("added")){
+          item.triggerEvent("$:click");
+        }
+      }
+    });
+  });
 }, components);
