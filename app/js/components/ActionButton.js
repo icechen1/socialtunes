@@ -9,6 +9,7 @@ Truss.init(function(components) {
         "<div class='info'>" +
           "<h2></h2>" +
           "<h3></h3>" +
+          "<a class='pbutton'><i class='fa fa-play'></i><i class='fa fa-pause'></i></a>" +
         "</div>" +
       "</div>",
     "properties": {
@@ -23,6 +24,14 @@ Truss.init(function(components) {
         } else {
           this.element.classList.remove("open");
         }
+      },
+      ".pbutton:click": function() {
+        if (this.element.className.indexOf("pause") == -1) {
+          this.element.classList.add("pause");
+        } else {
+          this.element.classList.remove("pause");
+        }
+        components.player.pauseSong();
       }
     },
     "functions": {

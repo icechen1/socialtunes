@@ -402,7 +402,7 @@ body {
   /*-webkit-transform: translateZ(0);*/
 }
 
-.ActionButton .button {
+.ActionButton .button, .ActionButton .pbutton {
   display:block;
   position:absolute;
   z-index:2;
@@ -425,11 +425,19 @@ body {
   color:#dd191d;
 }
 
+.ActionButton .pbutton:hover {
+  cursor: pointer;
+}
+
 .ActionButton:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
 }
 
 .ActionButton .fa-minus {
+  display:none;
+}
+
+.ActionButton .fa-pause {
   display:none;
 }
 
@@ -479,10 +487,17 @@ body {
     display:inline-block;
   }
 
-  .ActionButton.open .fa-play {
+  .ActionButton.open .button .fa-play {
     display:none;
   }
 
+  .ActionButton.pause .fa-pause {
+    display:inline-block;
+  }
+
+  .ActionButton.pause .fa-play {
+    display:none;
+  }
 
   .ActionButton.open {
     width:520px;

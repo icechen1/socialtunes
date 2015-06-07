@@ -1,5 +1,6 @@
 var Truss = (function() {
   
+  //Create Trust object
   var t={};
   
   t.init = function() {

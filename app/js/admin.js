@@ -1,7 +1,7 @@
 var components = components || {};
 
-function AudioPlayer() {
-  var current = new Audio();
+function AudioPlayer(audio) {
+  var current = audio;
 
   var songFinishedCallback = function() {};
 
@@ -21,10 +21,18 @@ function AudioPlayer() {
     current.src = song.url;
     current.play();
   };
+
+  this.pauseSong = function() {
+    if (current.paused) {
+      current.play();
+    } else {
+      current.pause();
+    }
+  }
 }
 
 function ajax(method, url, callback) {
-    var xmlhttp;
+    var xmlhttp;  
 
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -68,7 +76,7 @@ Truss.init(function(components) {
   //   DirectoryPicker.style.display = "none";
   // });
 
-
+  components.player = new AudioPlayer(document.getElementById("player"));
 
   components.l = components.ListView.new({
     "header": "Library",
@@ -168,6 +176,7 @@ Truss.init(function(components) {
         document.getElementById("library").style.display = "none";
         // document.getElementById("controls").style.display = "none";
       } else {
+
         document.getElementById("library").style.display = "block";
         // document.getElementById("controls").style.display = "block";
         components.l.show();
@@ -211,6 +220,7 @@ Truss.init(function(components) {
   components.DirPicker = components.DirectoryPicker.new({
     "message": "",
     "click": function() {
+      console.log("HELLO?!!!");
       document.getElementById("library").style.display = "block";
       // document.getElementById("controls").style.display = "block";
       components.l.show();
@@ -230,28 +240,27 @@ Truss.init(function(components) {
   components.dirb.hide();
   components.playerBtn.hide();
 
-  var Player = document.getElementById("player");
+  // var Player = document.getElementById("player");
+  // Player.src = "Miniskirt.mp3";
+  // Player.play();
 
-  var player = new AudioPlayer();
+  
 
   var queue = [
-    // {
-    //   "url": "c:\\Users\\YuChen\\Downloads\\hooked on a feeling bottles (4).mp3"
-    // }
     {
-      "url": "AOA1.mp3"
+      "url": "AOA.mp3"
     }
   ];
 
-  player.onSongFinished(function() {
+  components.player.onSongFinished(function() {
     var newSong = queue.shift();
 
     if (newSong) {
-      player.setSong(newSong);
+      components.player.setSong(newSong);
     }
   });
 
-  player.setSong(queue[0]);
+  components.player.setSong(queue[0]);
 
   components.socket.on("vote_updated", function(msg) {
     console.log(msg);
