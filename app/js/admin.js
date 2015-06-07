@@ -5,9 +5,13 @@ function AudioPlayer(audio) {
 
   var songFinishedCallback = function() {};
 
+  //set what the player does after song finish
+
   this.onSongFinished = function(callback) {
     songFinishedCallback = callback;
   };
+
+  //call songFinishedCallBack after song is finished
 
   current.addEventListener("ended", function() {
     songFinishedCallback();
@@ -16,6 +20,8 @@ function AudioPlayer(audio) {
   current.addEventListener("error", function() {
     console.error(current.error);
   });
+
+  //play song based on url
 
   this.setSong = function(song) {
     current.src = song.url;
@@ -59,34 +65,28 @@ function ajax(method, url, callback) {
 }
 
 Truss.init(function(components) {
-  // var DirectoryPicker = document.querySelector(".DirectoryPicker");
-
-  // DirectoryPicker.querySelector("input").addEventListener("change", function() {
-  //   DirectoryPicker.querySelector(".picker").innerHTML = this.files[0].name;
-  // });
-
-  // DirectoryPicker.querySelector(".picker").addEventListener("click", function() {
-  //   DirectoryPicker.querySelector("input").click();
-  // });
-
-  // DirectoryPicker.querySelector(".submit").addEventListener("click", function() {
-  //   //window.console.log(process.mainModule.exports);
-  //   //window.console.log(process.mainModule.exports.setDirectory);
-  //   process.mainModule.exports.setDirectory(DirectoryPicker.querySelector("input").value);
-  //   DirectoryPicker.style.display = "none";
-  // });
 
   components.player = new AudioPlayer(document.getElementById("player"));
+
+  //Library view
 
   components.l = components.ListView.new({
     "header": "Library",
     "items": [
+
+      //Views in the library
+
+      //1st view contains the songs option 
       components.LibraryView.new({
         "show": true,
         "items": [
+
+          // Submenu containing songs
           components.LibrarySubmenu.new({
             "name": "Songs",
             "icon": "<i class='fa fa-chevron-right'></i>",
+
+            //Display songs in the DB when opened 
             "open": function() {
               ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
                 items = JSON.parse(response);
@@ -96,7 +96,7 @@ Truss.init(function(components) {
                 Array.prototype.forEach.call(items, function(item) {
                   components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
                     "art": "images/album.jpg",
-                    "song": item.title,
+                    "song": item.song,
                     "album": item.album,
                     "artist": item.artist
                   }));
@@ -113,6 +113,8 @@ Truss.init(function(components) {
           })
         ]
       }),
+
+      // 2nd view is just a "back" button to go back to library 
       components.LibraryView.new({
         "items": [
           components.LibrarySubmenu.new({
@@ -122,24 +124,6 @@ Truss.init(function(components) {
               components.l.property("items")[0].show();
             }
           }),
-          /* components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }) */
         ]
       })
     ]
@@ -149,14 +133,7 @@ Truss.init(function(components) {
   //Queue
   components.q = components.ListView.new({
     "header": "Queue",
-    "items": [
-      components.ListItem.new({
-        "art": "images/hasselhoff.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      })
-    ],
+    "items": [],
     "hide": true
   });
   document.getElementById("library").appendChild(components.q.element);
@@ -220,7 +197,6 @@ Truss.init(function(components) {
   components.DirPicker = components.DirectoryPicker.new({
     "message": "",
     "click": function() {
-      console.log("HELLO?!!!");
       document.getElementById("library").style.display = "block";
       // document.getElementById("controls").style.display = "block";
       components.l.show();
@@ -248,7 +224,7 @@ Truss.init(function(components) {
 
   var queue = [
     {
-      "url": "AOA.mp3"
+      url: "AOA.mp3"
     }
   ];
 
@@ -262,19 +238,28 @@ Truss.init(function(components) {
 
   components.player.setSong(queue[0]);
 
+  components.socket.on("current_queue", function(msg) {
+    console.log(msg);
+  });
+
   components.socket.on("vote_updated", function(msg) {
     console.log(msg);
   });
 
   components.socket.on("new_queue", function(msg){
-    console.log("Received new song.");
-    console.log(msg);
-    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item) {
-      if (item.property("id") == msg){
-        if (!item.property("added")){
-          item.triggerEvent("$:click");
-        }
-      }
+    //received a new song to dd to queue
+    //console.log("Received new song.");
+    console.log("http://localhost:3005/api/querySong/" + msg);
+    ajax("GET", "http://localhost:3005/api/querySong/" + msg, function(response) {
+      item = JSON.parse(response);
+      components.q.addProperty("items", components.ListItem.new({
+        "art": item[0].art,
+        "song": item[0].song,
+        "album": item[0].album,
+        "artist": item[0].artist
+      }));
+      queue.push({"url": item[0].url});
     });
+    console.log(queue);
   });
 }, components);

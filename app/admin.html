@@ -20,11 +20,12 @@
     <script type="text/javascript" src="js/components/LibraryView.js"></script>
     <script type="text/javascript" src="js/components/ListView.js"></script>
     <script type="text/javascript" src="js/components/ActionButton.js"></script>
+    <script type="text/javascript" src="js/components/InfoButton.js"></script>
     <script type="text/javascript" src="js/components/MenuButton.js"></script>
     
     <script type="text/javascript" src="js/admin.js"></script>
     <script>
-      var socket = io();
+      var socket = io('http://localhost:3005', {path: '/socket.io'});
     </script>
     
     <title>SocialTunes</title>

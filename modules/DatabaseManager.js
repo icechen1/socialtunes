@@ -15,12 +15,14 @@ module.exports.init = function(){
     db.music = new Datastore({ filename:'index.db', autoload: true  });
     db.settings = new Datastore({ filename:'settings.db', autoload: true  });
     db.queue = new Datastore({filename:'queue.db', autoload:true });
+    db.path = new Datastore({filename:'path.db', autoload:true });
 
     // You need to load each database (here we do it asynchronously)
 
     db.music.loadDatabase();
     db.settings.loadDatabase();
     db.queue.loadDatabase();
+    db.path.loadDatabase();
 }
 
 
@@ -64,12 +66,33 @@ module.exports.saveSong = function(song){
  * Add a song
  */
 module.exports.addSong = function(song){
-    db.queue.insert(song, function (err, newDoc) {
-
+    db.findOne({ _id: 'song.id' }, function (err, doc) {
+        // If no document is found, doc is null
+        if(doc == null){
+            db.queue.insert(song, function (err, newDoc) {
+            });
+        }
     });
 };
 
-//Deletes everything
+/*
+ * Save a path
+ */
+module.exports.savePath = function(path){
+    db.path.remove({});
+    db.path.insert(path, function (err, newDoc){});
+};
+
+/*
+ * Return a path
+ */
+module.exports.queryPath = function(callback){
+    db.path.find({}, function (err, docs) {
+        callback(docs);
+    });
+};
+
+//Deletes all music
 module.exports.clearDb = function(){
     db.music.remove({ }, { multi: true }, function (err, numRemoved) {
         db.music.loadDatabase(function (err) {

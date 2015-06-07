@@ -48,7 +48,7 @@ Truss.init(function(components) {
                 Array.prototype.forEach.call(items, function(item) {
                   components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
                     "art": "images/album.jpg",
-                    "song": item.title,
+                    "song": item.song,
                     "album": item.album,
                     "artist": item.artist
                   }));
@@ -101,14 +101,7 @@ Truss.init(function(components) {
   //Queue
   components.q = components.ListView.new({
     "header": "Queue",
-    "items": [
-      components.ListItem.new({
-        "art": "images/hasselhoff.jpg",
-        "song": "Song Name",
-        "album": "Album Name",
-        "artist": "Artist Name"
-      })
-    ],
+    "items": [],
     "hide": true
   });
   document.getElementById("musicApp").appendChild(components.q.element);
@@ -133,26 +126,45 @@ Truss.init(function(components) {
   document.getElementById("menu").appendChild(components.qb.element);
   
   //Now Playing
-  components.playerBtn = components.ActionButton.new({
+  components.playerBtn = components.InfoButton.new({
     "song": "Hooked on a Feeling",
     "artist": "David Hasselhoff",
     "art": "images/hasselhoff.jpg"
   });
   document.body.appendChild(components.playerBtn.element);
   
+  components.socket.on("current_queue", function(msg) {
+    //code for what to do with queue as connection is established
+    msg.forEach(function(songid){
+      ajax("GET", "http://localhost:3005/api/querySong/" + songid, function(response) {
+        item = JSON.parse(response);
+        components.q.addProperty("items", components.ListItem.new({
+          "art": item[0].art,
+          "song": item[0].song,
+          "album": item[0].album,
+          "artist": item[0].artist
+        }));
+      });
+    }); 
+    console.log(msg);
+  });
+
   components.socket.on("vote_updated", function(msg) {
     console.log(msg);
   });
 
   components.socket.on("new_queue", function(msg){
-    console.log("Received new song.");
-    console.log(msg);
-    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item) {
-      if (item.property("id") == msg){
-        if (!item.property("added")){
-          item.triggerEvent("$:click");
-        }
-      }
+    //received a new song to dd to queue
+    //console.log("Received new song.");
+    console.log("http://localhost:3005/api/querySong/" + msg);
+    ajax("GET", "http://localhost:3005/api/querySong/" + msg, function(response) {
+      item = JSON.parse(response);
+      components.q.addProperty("items", components.ListItem.new({
+        "art": item[0].art,
+        "song": item[0].song,
+        "album": item[0].album,
+        "artist": item[0].artist
+      }));
     });
   });
 }, components);

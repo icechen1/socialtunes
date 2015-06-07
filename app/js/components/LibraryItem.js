@@ -28,16 +28,17 @@ Truss.init(function(components) {
           this.element.classList.add("animated");
           this.element.classList.remove("removed");
           this.element.classList.add("added");
-          this.setProperty("queueItem", components.ListItem.new({
-            "art": this.property("art"),
-            "song": this.property("song"),
-            "album": this.property("album"),
-            "artist": this.property("artist")
-          }));
-          components.q.addProperty("items", this.property("queueItem"));
-          //this is not working
-          // process.mainModule.exports.addSongToQueue(this.property("properties"));
-          console.log(this.property("id"));
+
+          //No need for client to manually add it's queue item
+
+          // this.setProperty("queueItem", components.ListItem.new({
+          //   "art": this.property("art"),
+          //   "song": this.property("song"),
+          //   "album": this.property("album"),
+          //   "artist": this.property("artist")
+          // }));
+          // components.q.addProperty("items", this.property("queueItem"));
+
           components.socket.emit("new_queue", this.property("id"));
         } else {
           this.setProperty("icon", "<i class='fa fa-plus'>");

@@ -26,8 +26,13 @@ app.get('/', function(req, res){
 app.get('/api/querySongs', function(req, res){
     db.querySong(function(docs){
         res.send(docs);
-    })
+    });
+});
 
+app.get('/api/querySong/:id', function(req, res){
+    db.querySongByID(req.params.id, function(docs){
+        res.send(docs);
+    });
 });
 
 db.init(); //initialize the database
@@ -40,10 +45,11 @@ http.listen(process.env.PORT||3005, function(){
 io.on('connection', function(socket){
     window.console.log('a user connected');
 
+    socket.emit('current_queue', queue);
+
     socket.on('new_queue', function(msg){
-        socket.emit('new_queue', msg);
-        //db.addSong(msg);
-        //window.console.log(msg);
+        //when socket sends a song to add to queue, send it to all other cleints
+        io.sockets.emit('new_queue', msg);
         db.querySongByID(msg, function(doc){
             queue.push(msg); //push the whole song document to the array
             window.console.log(queue);
@@ -73,17 +79,21 @@ var addMusic = function(err, musicfile){
          * Keep working on this
          */
             var song = {
-                title: tags.title || "Unknown",
+                song: tags.title || "Unknown",
                 album: tags.album || "Unknown Album",
                 artist: tags.artist || "Unknown Artist",
+                art: tags.art || "images/hasselhoff.jpg",
                 url: musicfile
             };
             //console.log(song)
             db.saveSong(song);
 
+            // I can't seem to find a way to get the picture 
+            /*window.console.log(tags.v2);
+
             if (tags.v2.image) {
                 window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
-            }
+            }*/
 
         });
     }
@@ -118,9 +128,16 @@ this.setDirectory = function(dir){
 };
 
 
-//This code is *supposed* to add a song to the db
+//Add a song to the db
 this.addSongToQueue = function(song){
     db.addSong(song);
+}
+
+//See if there's already a defined path
+this.checkPath = function(){
+    db.queryPath(function(path){
+        return path != null;
+    });
 }
 
 //walk("C:\\Users\\Public\\Music\\Sample Music", /.mp3$/, addMusic);

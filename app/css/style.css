@@ -380,9 +380,9 @@ body {
 }
 
 
-/* ActionButton */
+/* ActionButton and InfoButton */
 
-.ActionButton {
+.ActionButton, .InfoButton{
   position:fixed;
   bottom: 20px;
   right: 20px;
@@ -396,13 +396,13 @@ body {
   line-height:50px;
   font-size: 50px;
   box-shadow: 0 0 8px rgba(0,0,0,0.15);
-  transition: width ease 0.2s;
+  transition: width ease 0.2s, bottom 0.5s cubic-bezier(0,1.5,0.5,1);
   overflow:hidden;
   z-index:9000;
   /*-webkit-transform: translateZ(0);*/
 }
 
-.ActionButton .button, .ActionButton .pbutton {
+.ActionButton .button, .ActionButton .pbutton, .InfoButton .button {
   display:block;
   position:absolute;
   z-index:2;
@@ -420,7 +420,7 @@ body {
   transition: transform ease 0.5s, color ease 0.2s, background-color ease 0.2s;
 }
 
-.ActionButton .button:hover, .ActionButton:hover {
+.ActionButton .button:hover, .ActionButton:hover, .InfoButton .button:hover, .InfoButton:hover {
   background-color:#FFF;
   color:#dd191d;
 }
@@ -429,19 +429,19 @@ body {
   cursor: pointer;
 }
 
-.ActionButton:hover {
+.ActionButton:hover, .InfoButton:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
 }
 
-.ActionButton .fa-minus {
+.ActionButton .fa-minus, .InfoButton .fa-minus {
   display:none;
 }
 
-.ActionButton .fa-pause {
+.ActionButton .pbutton .fa-play {
   display:none;
 }
 
-.ActionButton .player {
+.ActionButton .player, .InfoButton .player {
   z-index:1;
   width: 360px;
   position:absolute;
@@ -453,14 +453,14 @@ body {
   font-size:0;
 }
 
-.ActionButton .player img {
+.ActionButton .player img, .InfoButton .player img {
   height:100%;
   width:auto;
   display:inline-block;
   vertical-align:top;
 }
 
-.ActionButton .info {
+.ActionButton .info, .InfoButton .info {
   display: inline-block;
   vertical-align: middle;
   width: 200px;
@@ -468,14 +468,14 @@ body {
   margin-left:20px;
 }
 
-.ActionButton .player h2 {
+.ActionButton .player h2, .InfoButton .player h2 {
   font-size: 14px;
   line-height: 14px;
   font-weight:bold;
   margin: 5px 0;
 }
 
-.ActionButton .player h3 {
+.ActionButton .player h3, .InfoButton .player h3 {
   font-size: 14px;
   font-weight:normal;
   line-height: 14px;
@@ -483,41 +483,41 @@ body {
 }
 
 @media all and (min-width: 701px) {
-  .ActionButton.open .fa-minus {
+  .ActionButton.open .fa-minus, .InfoButton.open .fa-minus {
     display:inline-block;
   }
 
-  .ActionButton.open .button .fa-play {
+  .ActionButton.open .button .fa-play, .InfoButton.open .button .fa-play {
     display:none;
   }
 
   .ActionButton.pause .fa-pause {
-    display:inline-block;
-  }
-
-  .ActionButton.pause .fa-play {
     display:none;
   }
 
-  .ActionButton.open {
+  .ActionButton.pause .pbutton .fa-play {
+    display:inline-block;
+  }
+
+  .ActionButton.open, .InfoButton.open {
     width:520px;
     border-radius: 45px;
     background-color:#dd191d;
     color:#FFF;
   }
 
-  .ActionButton.open .button {
+  .ActionButton.open .button, .InfoButton.open .button {
     transform: rotate(180deg);
   }
 
-  .ActionButton.open .button:hover {
+  .ActionButton.open .button:hover, .InfoButton.open .button:hover {
     color:#dd191d;
     background-color:#FFF;
   }
 }
 
 @media all and (max-width: 700px) {
-  .ActionButton {
+  .ActionButton, .InfoButton {
     width:auto;
     left:0;
     right:0;
@@ -525,15 +525,15 @@ body {
     border-radius: 0;
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
   }
-  .ActionButton:hover {
+  .ActionButton:hover, .InfoButton:hover {
     background-color:#dd191d;
     color:#FFF;
     box-shadow: 0 0 15px rgba(0,0,0,0.4);
   }
-  .ActionButton .button {
+  .ActionButton .button, .InfoButton .button {
     display:none;
   }
-  .ActionButton .player {
+  .ActionButton .player, .InfoButton .player {
     left:0;
   }
 }

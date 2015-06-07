@@ -1,6 +1,4 @@
-index.db
-settings.db
-queue.db
+*.db
 
 lib-cov
 *.seed
@@ -23,3 +21,6 @@ node_modules
 *.iml
 .DS_Store
 Thumbs.db
+
+/app/*.jpg
+/app/*.ini
