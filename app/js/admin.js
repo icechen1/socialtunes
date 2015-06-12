@@ -1,4 +1,5 @@
 var components = components || {};
+var fs = require('fs');
 
 function AudioPlayer(audio) {
   var current = audio;
@@ -194,6 +195,8 @@ Truss.init(function(components) {
   });
   document.getElementById("controls").appendChild(components.playerBtn.element);
 
+  //Directory picker
+
   components.DirPicker = components.DirectoryPicker.new({
     "message": "",
     "click": function() {
@@ -210,11 +213,38 @@ Truss.init(function(components) {
   document.getElementById("dirPicker").appendChild(components.DirPicker.element);
 
   document.getElementById("library").style.display = "none";
-  // document.getElementById("controls").style.display = "none";
-  components.l.hide();
-  components.qb.hide();
-  components.dirb.hide();
-  components.playerBtn.hide();
+
+  try {
+    var tempPath;
+
+    ajax("GET", "http://localhost:3005/api/querypath/", function(response) {
+      console.log(response);
+      var temp = JSON.parse(response);
+      tempPath = temp.path;
+      console.log(tempPath);
+
+      //Query the entry
+      var stats = fs.lstatSync(tempPath);
+
+      //Is it a directory?
+      if (stats.isDirectory()) {
+          components.DirPicker.setDir(tempPath);
+          document.getElementById("library").style.display = "block";
+          components.l.show();
+          components.qb.show();
+          components.dirb.show();
+          components.playerBtn.show();
+          components.DirPicker.hide();
+      }
+    });
+  }
+  catch (e) {
+    console.log(e);
+    components.l.hide();
+    components.qb.hide();
+    components.dirb.hide();
+    components.playerBtn.hide();
+  }
 
   // var Player = document.getElementById("player");
   // Player.src = "Miniskirt.mp3";
@@ -239,14 +269,33 @@ Truss.init(function(components) {
   components.player.setSong(queue[0]);
 
   components.socket.on("current_queue", function(msg) {
-    console.log(msg);
+    //code for what to do with queue as connection is established
+    msg.forEach(function(songid){
+      ajax("GET", "http://localhost:3005/api/querySong/" + songid, function(response) {
+        item = JSON.parse(response);
+        components.q.addProperty("items", components.ListItem.new({
+          "art": item[0].art,
+          "song": item[0].song,
+          "album": item[0].album,
+          "artist": item[0].artist
+        }));
+      });
+      //Toggle for each item already in the queue
+      Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+        if (item.property("id") != null){
+          if (item.property("id").valueOf() == songid.valueOf()){
+            item.toggle();
+          }
+        }
+      });
+    }); 
   });
 
   components.socket.on("vote_updated", function(msg) {
     console.log(msg);
   });
 
-  components.socket.on("new_queue", function(msg){
+  components.socket.on("new_queue_item", function(msg){
     //received a new song to dd to queue
     //console.log("Received new song.");
     console.log("http://localhost:3005/api/querySong/" + msg);
@@ -260,6 +309,14 @@ Truss.init(function(components) {
       }));
       queue.push({"url": item[0].url});
     });
-    console.log(queue);
+    //Toggle for each item already in the queue
+    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+      if (item.property("id") != null){
+        if (item.property("id").valueOf() == msg.valueOf()){
+          item.toggle();
+        }
+      }
+    });
   });
+
 }, components);

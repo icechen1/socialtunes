@@ -78,16 +78,18 @@ module.exports.addSong = function(song){
 /*
  * Save a path
  */
+
 module.exports.savePath = function(path){
     db.path.remove({});
-    db.path.insert(path, function (err, newDoc){});
+    db.path.insert({ path: path }, function (err, newDoc) {
+    });
 };
 
 /*
  * Return a path
  */
 module.exports.queryPath = function(callback){
-    db.path.find({}, function (err, docs) {
+    db.path.findOne({}, function (err, docs) {
         callback(docs);
     });
 };
@@ -99,4 +101,9 @@ module.exports.clearDb = function(){
             // done
         });
     });
-}
+    db.queue.remove({ }, { multi: true }, function (err, numRemoved) {
+        db.queue.loadDatabase(function (err) {
+            // done
+        });
+    });
+};

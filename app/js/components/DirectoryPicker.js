@@ -43,11 +43,14 @@ Truss.init(function(components) {
             this.style.overflow = "visible";
           }
         }, false);
+      },
+      "setDir": function(dir) {
+        process.mainModule.exports.setDirectory(dir);
       }
     },
     "events": {
       ".fileDialog:change": function() {
-        console.log(this.element.querySelector("input").value);
+        //console.log(this.element.querySelector("input").value);
       },
       ".picker:click": function() {
         this.element.querySelector("input").click();
@@ -58,6 +61,6 @@ Truss.init(function(components) {
           this.property("click")();
         }
       }
-    }
+    },
   });
 }, components);  

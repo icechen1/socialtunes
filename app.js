@@ -29,8 +29,16 @@ app.get('/api/querySongs', function(req, res){
     });
 });
 
+//API Endpoint to retrieve a specific song
 app.get('/api/querySong/:id', function(req, res){
     db.querySongByID(req.params.id, function(docs){
+        res.send(docs);
+    });
+});
+
+//API Endpoint to retrieve previous path
+app.get('/api/querypath', function(req, res){
+    db.queryPath(function(docs){
         res.send(docs);
     });
 });
@@ -43,13 +51,13 @@ http.listen(process.env.PORT||3005, function(){
 });
 
 io.on('connection', function(socket){
-    window.console.log('a user connected');
+    window.console.log('a user connected ' + socket.id);
 
     socket.emit('current_queue', queue);
 
-    socket.on('new_queue', function(msg){
+    socket.on('new_queue_item', function(msg){
         //when socket sends a song to add to queue, send it to all other cleints
-        io.sockets.emit('new_queue', msg);
+        io.sockets.emit('new_queue_item', msg);
         db.querySongByID(msg, function(doc){
             queue.push(msg); //push the whole song document to the array
             window.console.log(queue);
@@ -69,15 +77,14 @@ io.on('connection', function(socket){
     });
 });
 
+//Add a music file to the database
+
 var addMusic = function(err, musicfile){
     if (err) window.console.log(err);
     else{
         id3({file: musicfile, type: id3.OPEN_LOCAL }, function(err, tags) {
             if (err) throw err;
-            //window.console.log(tags);
-        /*
-         * Keep working on this
-         */
+            // Pictures don't seem to work, standard conflict? Cannot find album art
             var song = {
                 song: tags.title || "Unknown",
                 album: tags.album || "Unknown Album",
@@ -85,25 +92,22 @@ var addMusic = function(err, musicfile){
                 art: tags.art || "images/hasselhoff.jpg",
                 url: musicfile
             };
-            //console.log(song)
             db.saveSong(song);
-
-            // I can't seem to find a way to get the picture 
-            /*window.console.log(tags.v2);
-
-            if (tags.v2.image) {
-                window.console.log(String.fromCharCode.apply(null, tags.v2.image.data));
-            }*/
-
         });
     }
 };
+
+//Set the directory to be searched
 
 this.setDirectory = function(dir){
     //Clear the old database index
     db.clearDb();
     musicPath = dir;
-    // walk(musicPath, /.mp3$/, addMusic);
+
+    //save path in DB
+    db.savePath(dir);
+    
+    //Find all mp3
     var finder = new node_find_files({
         rootFolder : musicPath,
         filterFunction : function (path, stat) {
@@ -133,10 +137,10 @@ this.addSongToQueue = function(song){
     db.addSong(song);
 }
 
-//See if there's already a defined path
-this.checkPath = function(){
+//Get DB path
+this.getDBPath = function(){
     db.queryPath(function(path){
-        return path != null;
+        return path;
     });
 }
 

@@ -29,7 +29,7 @@ Truss.init(function(components) {
           this.element.classList.remove("removed");
           this.element.classList.add("added");
 
-          //No need for client to manually add it's queue item
+          //No need for client to manually add its queue item
 
           // this.setProperty("queueItem", components.ListItem.new({
           //   "art": this.property("art"),
@@ -39,7 +39,7 @@ Truss.init(function(components) {
           // }));
           // components.q.addProperty("items", this.property("queueItem"));
 
-          components.socket.emit("new_queue", this.property("id"));
+          components.socket.emit("new_queue_item", this.property("id"));
         } else {
           this.setProperty("icon", "<i class='fa fa-plus'>");
           this.setProperty("added", false);
@@ -61,6 +61,15 @@ Truss.init(function(components) {
             }
           }.bind(this), false);
         }
+      }
+    },
+    "functions": {
+      "toggle": function(){
+        this.setProperty("icon", "<i class='fa fa-minus'>");
+          this.setProperty("added", true);
+          this.element.classList.add("animated");
+          this.element.classList.remove("removed");
+          this.element.classList.add("added");
       }
     }
   });

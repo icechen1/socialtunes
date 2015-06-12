@@ -40,27 +40,8 @@ Truss.init(function(components) {
             "name": "Songs",
             "icon": "<i class='fa fa-chevron-right'></i>",
             "open": function() {
-              ajax("GET", "api/querysongs/", function(response) {
-                items = JSON.parse(response);
-                
-                components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
-                var count = 1;
-                Array.prototype.forEach.call(items, function(item) {
-                  components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
-                    "art": "images/album.jpg",
-                    "song": item.song,
-                    "album": item.album,
-                    "artist": item.artist
-                  }));
-                  components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
-                });
-                // var i;
-                // for (i = 0; i < components.l.property("items")[1].property("items").length; i++){
-                //   console.log(components.l.property("items")[1].property("items")[i].properties());
-                //   console.log(components.l.property("items")[1].property("items")[i].property("id"));
-                // }
-                components.l.property("items")[1].show();
-              });
+              //TODO: not have to call each time
+              components.l.property("items")[1].show();
             }
           })
         ]
@@ -73,29 +54,28 @@ Truss.init(function(components) {
             "open": function() {
               components.l.property("items")[0].show();
             }
-          }),
-          /* components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }),
-          components.LibraryItem.new({
-            "art": "images/album.jpg",
-            "song": "Song Name",
-            "album": "Album Name",
-            "artist": "Artist Name"
-          }) */
+          })
         ]
       })
     ]
   });
+
+  ajax("GET", "api/querysongs/", function(response) {
+    items = JSON.parse(response);
+    //Resets the library view to only include "Back" 
+    components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
+    var count = 1;
+    Array.prototype.forEach.call(items, function(item) {
+      components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
+        "art": "images/album.jpg",
+        "song": item.song,
+        "album": item.album,
+        "artist": item.artist
+      }));
+      components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
+    });
+  });
+
   document.getElementById("musicApp").appendChild(components.l.element);
   
   //Queue
@@ -145,15 +125,22 @@ Truss.init(function(components) {
           "artist": item[0].artist
         }));
       });
+      //Toggle for each item already in the queue
+      Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+        if (item.property("id") != null){
+          if (item.property("id").valueOf() == songid.valueOf()){
+            item.toggle();
+          }
+        }
+      });
     }); 
-    console.log(msg);
   });
 
   components.socket.on("vote_updated", function(msg) {
     console.log(msg);
   });
 
-  components.socket.on("new_queue", function(msg){
+  components.socket.on("new_queue_item", function(msg){
     //received a new song to dd to queue
     //console.log("Received new song.");
     console.log("http://localhost:3005/api/querySong/" + msg);
@@ -165,6 +152,14 @@ Truss.init(function(components) {
         "album": item[0].album,
         "artist": item[0].artist
       }));
+    });
+    //Toggle for each item already in the queue
+    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+      if (item.property("id") != null){
+        if (item.property("id").valueOf() == msg.valueOf()){
+          item.toggle();
+        }
+      }
     });
   });
 }, components);
