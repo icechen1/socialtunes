@@ -39,7 +39,7 @@ function AudioPlayer(audio) {
 }
 
 function ajax(method, url, callback) {
-    var xmlhttp;  
+    var xmlhttp;
 
     if (window.XMLHttpRequest) {
         // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -77,7 +77,7 @@ Truss.init(function(components) {
 
       //Views in the library
 
-      //1st view contains the songs option 
+      //1st view contains the songs option
       components.LibraryView.new({
         "show": true,
         "items": [
@@ -87,11 +87,11 @@ Truss.init(function(components) {
             "name": "Songs",
             "icon": "<i class='fa fa-chevron-right'></i>",
 
-            //Display songs in the DB when opened 
+            //Display songs in the DB when opened
             "open": function() {
               ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
                 items = JSON.parse(response);
-                
+
                 components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
                 var count = 1;
                 Array.prototype.forEach.call(items, function(item) {
@@ -115,7 +115,7 @@ Truss.init(function(components) {
         ]
       }),
 
-      // 2nd view is just a "back" button to go back to library 
+      // 2nd view is just a "back" button to go back to library
       components.LibraryView.new({
         "items": [
           components.LibrarySubmenu.new({
@@ -130,7 +130,7 @@ Truss.init(function(components) {
     ]
   });
   document.getElementById("library").appendChild(components.l.element);
-  
+
   //Queue
   components.q = components.ListView.new({
     "header": "Queue",
@@ -138,7 +138,7 @@ Truss.init(function(components) {
     "hide": true
   });
   document.getElementById("library").appendChild(components.q.element);
-  
+
   //Directory Picker button
   components.dirb = components.MenuButton.new({
     "icon": "<i class='fa fa-eject'></i>",
@@ -186,7 +186,7 @@ Truss.init(function(components) {
     }
   });
   document.getElementById("menu").appendChild(components.qb.element);
-  
+
   //Now Playing
   components.playerBtn = components.ActionButton.new({
     "song": "Hooked on a Feeling",
@@ -219,6 +219,10 @@ Truss.init(function(components) {
 
     ajax("GET", "http://localhost:3005/api/querypath/", function(response) {
       console.log(response);
+      if (response == '""') {
+          console.log("Empty JSON response!")
+          return;
+      }
       var temp = JSON.parse(response);
       tempPath = temp.path;
       console.log(tempPath);
@@ -250,7 +254,7 @@ Truss.init(function(components) {
   // Player.src = "Miniskirt.mp3";
   // Player.play();
 
-  
+
 
   var queue = [
     {
@@ -288,7 +292,7 @@ Truss.init(function(components) {
           }
         }
       });
-    }); 
+    });
   });
 
   components.socket.on("vote_updated", function(msg) {
