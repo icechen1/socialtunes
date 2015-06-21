@@ -314,7 +314,11 @@ Truss.init(function(components) {
       }));
       queue.push({"url": item[0].url});
       if(components.player.ended || components.player.src == null){
-        components.player.setSong(queue[0]);
+            var newSong = queue.shift();
+
+            if (newSong) {
+              components.player.setSong(newSong);
+            }
       }
     });
     //Toggle for each item already in the queue
