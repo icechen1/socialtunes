@@ -114,6 +114,7 @@ Truss.init(function(components) {
   document.body.appendChild(components.playerBtn.element);
   
   components.socket.on("current_queue", function(msg) {
+    var count = 0;
     //code for what to do with queue as connection is established
     msg.forEach(function(songid){
       ajax("GET", "http://localhost:3005/api/querySong/" + songid, function(response) {
@@ -124,6 +125,7 @@ Truss.init(function(components) {
           "album": item[0].album,
           "artist": item[0].artist
         }));
+        components.q.property("items")[count++].addProperty("id", msg);
       });
       //Toggle for each item already in the queue
       Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){

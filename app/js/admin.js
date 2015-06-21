@@ -2,7 +2,7 @@ var components = components || {};
 var fs = require('fs');
 
 function AudioPlayer(audio) {
-  var current = audio;
+  var current = audio || new Audio();
 
   var songFinishedCallback = function() {};
 
@@ -26,6 +26,8 @@ function AudioPlayer(audio) {
 
   this.setSong = function(song) {
     current.src = song.url;
+    console.log(current);
+    console.log(current.src);
     current.play();
   };
 
@@ -67,7 +69,8 @@ function ajax(method, url, callback) {
 
 Truss.init(function(components) {
 
-  components.player = new AudioPlayer(document.getElementById("player"));
+  //components.player = new AudioPlayer(document.getElementById("player"));
+  components.player = new AudioPlayer();
 
   //Library view
 
@@ -219,7 +222,7 @@ Truss.init(function(components) {
 
     ajax("GET", "http://localhost:3005/api/querypath/", function(response) {
       console.log(response);
-      if (response == '""') {
+      if (response == '') {
           console.log("Empty JSON response!")
           return;
       }
@@ -273,6 +276,7 @@ Truss.init(function(components) {
   components.player.setSong(queue[0]);
 
   components.socket.on("current_queue", function(msg) {
+    var count = 0;
     //code for what to do with queue as connection is established
     msg.forEach(function(songid){
       ajax("GET", "http://localhost:3005/api/querySong/" + songid, function(response) {
@@ -283,6 +287,7 @@ Truss.init(function(components) {
           "album": item[0].album,
           "artist": item[0].artist
         }));
+        components.q.property("items")[count++].addProperty("id", msg);
       });
       //Toggle for each item already in the queue
       Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
