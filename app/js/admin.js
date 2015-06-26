@@ -1,6 +1,9 @@
 var components = components || {};
 var fs = require('fs');
 
+  var queue = [
+  ];
+
 function AudioPlayer(audio) {
   var current = audio || new Audio();
 
@@ -240,14 +243,6 @@ Truss.init(function(components) {
   // Player.src = "Miniskirt.mp3";
   // Player.play();
 
-
-
-  var queue = [
-    {
-      url: "AOA.mp3"
-    }
-  ];
-
   components.player.onSongFinished(function() {
     var newSong = queue.shift();
 
@@ -256,7 +251,8 @@ Truss.init(function(components) {
     }
   });
 
-  components.player.setSong(queue[0]);
+  if(queue.length >0)
+    components.player.setSong(queue[0]);
 
   components.socket.on("initial_library", function(msg) {
     ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
@@ -346,6 +342,13 @@ Truss.init(function(components) {
         "artist": item[0].artist
       }));
       queue.push({"url": item[0].url});
+      if(components.player.ended || components.player.src == null){
+            var newSong = queue.shift();
+
+            if (newSong) {
+              components.player.setSong(newSong);
+            }
+      }
     });
     //Toggle for each item already in the queue
     Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
