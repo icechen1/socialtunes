@@ -10,8 +10,9 @@ var path = require('path');
 var node_find_files = require("node-find-files");
 
 var db = require("./modules/DatabaseManager.js");
+var queue = require("./modules/Queue.js");
 
-var queue =[];
+//var queue =[];
 
 // Load native UI library
 //var gui = require('nw.gui');
@@ -50,17 +51,28 @@ http.listen(process.env.PORT||3005, function(){
     console.log('listening on port '+ process.env.PORT||3005);
 });
 
+var mSocket;
+
 io.on('connection', function(socket){
     window.console.log('a user connected ' + socket.id);
-
-    socket.emit('current_queue', queue);
+    mSocket = socket;
+    socket.emit('current_queue', queue.index());
 
     socket.on('new_queue_item', function(msg){
         //when socket sends a song to add to queue, send it to all other cleints
-        io.sockets.emit('new_queue_item', msg);
         db.querySongByID(msg, function(doc){
-            queue.push(msg); //push the whole song document to the array
-            window.console.log(queue);
+            if (queue.add(msg)){ //push the whole song document to the array
+                io.sockets.emit('new_queue_item', msg);
+            } 
+        });
+    });
+
+    socket.on('remove_queue_item', function(msg){
+        //when socket removes a song from the queue, send it to all other cleints
+        db.querySongByID(msg, function(doc){
+            if (queue.remove(msg)){ //remove the whole song document to the array
+                io.sockets.emit('remove_queue_item', msg);
+            } 
         });
     });
 
@@ -121,6 +133,9 @@ this.setDirectory = function(dir){
     finder.on("complete", function() {
         window.console.log("Finished");
         //db.querySong();
+        if(mSocket != null) {
+            mSocket.emit('initial_library', "");
+        }
     })
     finder.on("patherror", function(err, strPath) {
         window.console.log("Error for Path " + strPath + " " + err)  // Note that an error in accessing a particular file does not stop the whole show
@@ -132,9 +147,9 @@ this.setDirectory = function(dir){
 };
 
 
-//Add a song to the db
+//Add a song to the queue
 this.addSongToQueue = function(song){
-    db.addSong(song);
+    queue.add(song);
 }
 
 //Get DB path

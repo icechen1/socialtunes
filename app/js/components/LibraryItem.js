@@ -46,20 +46,22 @@ Truss.init(function(components) {
           this.element.classList.remove("added");
           this.element.classList.add("removed");
 
-          this.property("queueItem").element.style.overflow = "hidden";
-          this.property("queueItem").element.style.height = getComputedStyle(this.property("queueItem").element).height;
-          this.property("queueItem").element.style.transition = 'all .5s ease';
-          this.property("queueItem").element.offsetHeight = "" + this.property("queueItem").element.offsetHeight; // force repaint
-          this.property("queueItem").element.style.height = '0';
-          this.property("queueItem").element.style.minHeight = '0';
-          this.property("queueItem").element.style.paddingTop = "0";
-          this.property("queueItem").element.style.paddingBottom = "0";
-          this.property("queueItem").element.addEventListener("transitionend", function transitionEnd(event) {
-            if (event.propertyName == 'height') {
-              this.property("queueItem").element.removeEventListener('transitionend', transitionEnd.bind(this), false);
-              //components.q.removeProperty("items", this.property("queueItem"));
-            }
-          }.bind(this), false);
+          components.socket.emit("remove_queue_item", this.property("id"));
+
+          // this.property("queueItem").element.style.overflow = "hidden";
+          // this.property("queueItem").element.style.height = getComputedStyle(this.property("queueItem").element).height;
+          // this.property("queueItem").element.style.transition = 'all .5s ease';
+          // this.property("queueItem").element.offsetHeight = "" + this.property("queueItem").element.offsetHeight; // force repaint
+          // this.property("queueItem").element.style.height = '0';
+          // this.property("queueItem").element.style.minHeight = '0';
+          // this.property("queueItem").element.style.paddingTop = "0";
+          // this.property("queueItem").element.style.paddingBottom = "0";
+          // this.property("queueItem").element.addEventListener("transitionend", function transitionEnd(event) {
+          //   if (event.propertyName == 'height') {
+          //     this.property("queueItem").element.removeEventListener('transitionend', transitionEnd.bind(this), false);
+          //     //components.q.removeProperty("items", this.property("queueItem"));
+          //   }
+          // }.bind(this), false);
         }
       }
     },

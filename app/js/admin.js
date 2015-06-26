@@ -69,6 +69,8 @@ function ajax(method, url, callback) {
 
 Truss.init(function(components) {
 
+  var queueIndex = 0;
+
   //components.player = new AudioPlayer(document.getElementById("player"));
   components.player = new AudioPlayer();
 
@@ -92,27 +94,7 @@ Truss.init(function(components) {
 
             //Display songs in the DB when opened
             "open": function() {
-              ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
-                items = JSON.parse(response);
-
-                components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
-                var count = 1;
-                Array.prototype.forEach.call(items, function(item) {
-                  components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
-                    "art": "images/album.jpg",
-                    "song": item.song,
-                    "album": item.album,
-                    "artist": item.artist
-                  }));
-                  components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
-                });
-                // var i;
-                // for (i = 0; i < components.l.property("items")[1].property("items").length; i++){
-                //   console.log(components.l.property("items")[1].property("items")[i].properties());
-                //   console.log(components.l.property("items")[1].property("items")[i].property("id"));
-                // }
-                components.l.property("items")[1].show();
-              });
+              components.l.property("items")[1].show();
             }
           })
         ]
@@ -132,6 +114,7 @@ Truss.init(function(components) {
       })
     ]
   });
+
   document.getElementById("library").appendChild(components.l.element);
 
   //Queue
@@ -275,8 +258,26 @@ Truss.init(function(components) {
 
   components.player.setSong(queue[0]);
 
+  components.socket.on("initial_library", function(msg) {
+    ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
+      items = JSON.parse(response);
+
+      components.l.property("items")[1].setProperty("items", [components.l.property("items")[1].property("items")[0]]);
+      var count = 1;
+      Array.prototype.forEach.call(items, function(item) {
+        components.l.property("items")[1].addProperty("items", components.LibraryItem.new({
+          "art": "images/album.jpg",
+          "song": item.song,
+          "album": item.album,
+          "artist": item.artist
+        }));
+        components.l.property("items")[1].property("items")[count++].addProperty("id", item._id);
+      });
+    });
+  });
+
   components.socket.on("current_queue", function(msg) {
-    var count = 0;
+    
     //code for what to do with queue as connection is established
     msg.forEach(function(songid){
       ajax("GET", "http://localhost:3005/api/querySong/" + songid, function(response) {
@@ -287,7 +288,7 @@ Truss.init(function(components) {
           "album": item[0].album,
           "artist": item[0].artist
         }));
-        components.q.property("items")[count++].addProperty("id", msg);
+        components.q.property("items")[queueIndex++].addProperty("id", msg);
       });
       //Toggle for each item already in the queue
       Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
@@ -307,7 +308,35 @@ Truss.init(function(components) {
   components.socket.on("new_queue_item", function(msg){
     //received a new song to dd to queue
     //console.log("Received new song.");
-    console.log("http://localhost:3005/api/querySong/" + msg);
+    //console.log("Added new item: http://localhost:3005/api/querySong/" + msg);
+    ajax("GET", "http://localhost:3005/api/querySong/" + msg, function(response) {
+      item = JSON.parse(response);
+      components.q.addProperty("items", components.ListItem.new({
+        "art": item[0].art,
+        "song": item[0].song,
+        "album": item[0].album,
+        "artist": item[0].artist
+      }));
+      components.q.property("items")[queueIndex++].addProperty("id", msg);
+      queue.push({"url": item[0].url});
+    });
+    //Toggle for each item already in the queue
+    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+      if (item.property("id") != null){
+        console.log(item.property("id").valueOf());
+        console.log(msg);
+        if (item.property("id").valueOf() == msg.valueOf()){
+          item.toggle();
+          console.log("I toggled item " + item);
+        }
+      }
+    });
+  });
+
+  components.socket.on("remove_queue_item", function(msg){
+    //received a new song to dd to queue
+    //console.log("Received new song.");
+    //console.log("Added new item: http://localhost:3005/api/querySong/" + msg);
     ajax("GET", "http://localhost:3005/api/querySong/" + msg, function(response) {
       item = JSON.parse(response);
       components.q.addProperty("items", components.ListItem.new({
@@ -321,8 +350,11 @@ Truss.init(function(components) {
     //Toggle for each item already in the queue
     Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
       if (item.property("id") != null){
+        console.log(item.property("id").valueOf());
+        console.log(msg);
         if (item.property("id").valueOf() == msg.valueOf()){
           item.toggle();
+          console.log("I toggled item " + item);
         }
       }
     });

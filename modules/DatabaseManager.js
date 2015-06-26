@@ -63,14 +63,31 @@ module.exports.saveSong = function(song){
 };
 
 /*
- * Add a song
+ * Add a song to queue
  */
-module.exports.addSong = function(song){
+module.exports.queueSong = function(song){
     db.findOne({ _id: 'song.id' }, function (err, doc) {
         // If no document is found, doc is null
         if(doc == null){
             db.queue.insert(song, function (err, newDoc) {
+                if (err){
+                    console.log(err);
+                }
             });
+        }
+    });
+};
+
+/*
+ * Remove a song from queue
+ */
+module.exports.rmQueueSong = function(song){
+    db.queue.remove({ _id: 'song.id' }, {}, function (err, numRemoved){
+        //removed from db
+        if (err){
+            console.log(err);
+        } else {
+            console.log("Removed " + numRemoved + " items from queue");
         }
     });
 };

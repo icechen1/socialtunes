@@ -114,6 +114,7 @@ Truss.init(function(components) {
   document.body.appendChild(components.playerBtn.element);
   
   components.socket.on("current_queue", function(msg) {
+    console.log(msg);
     var count = 0;
     //code for what to do with queue as connection is established
     msg.forEach(function(songid){
@@ -145,7 +146,7 @@ Truss.init(function(components) {
   components.socket.on("new_queue_item", function(msg){
     //received a new song to dd to queue
     //console.log("Received new song.");
-    console.log("http://localhost:3005/api/querySong/" + msg);
+    //console.log("http://localhost:3005/api/querySong/" + msg);
     ajax("GET", "http://localhost:3005/api/querySong/" + msg, function(response) {
       item = JSON.parse(response);
       components.q.addProperty("items", components.ListItem.new({
