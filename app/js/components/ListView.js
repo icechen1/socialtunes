@@ -39,7 +39,19 @@ Truss.init(function(components) {
             this.style.overflow = "visible";
           }
         }, false);
-      }
+      },
+      /*"removeItem": function(songId) {
+        // for (var i = 0; i < this.property("items"); i++) {
+        //   if (item.property("id") == songId) {
+        //     this.removeProperty("items", item);
+        //   }
+        // }
+        Array.prototype.forEach.call(this.property("items"), function(item) {
+          if (item.property("id") == songId) {
+            this.removeProperty("items", item);
+          }
+        }); 
+      }*/
     },
     "events": {
       "init": function() {

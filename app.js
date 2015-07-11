@@ -45,6 +45,7 @@ app.get('/api/querypath', function(req, res){
 });
 
 db.init(); //initialize the database
+queue.init(db);
 
 
 http.listen(process.env.PORT||3005, function(){
@@ -68,7 +69,7 @@ io.on('connection', function(socket){
     });
 
     socket.on('remove_queue_item', function(msg){
-        //when socket removes a song from the queue, send it to all other cleints
+        //when socket removes a song from the queue, send it to all other clients
         db.querySongByID(msg, function(doc){
             if (queue.remove(msg)){ //remove the whole song document to the array
                 io.sockets.emit('remove_queue_item', msg);

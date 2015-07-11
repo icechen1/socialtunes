@@ -14,6 +14,7 @@ module.exports.add = function(songId){
     if (queue.indexOf(songId) == -1){
         //console.log("This is sparta " + song + " " + song.id)
         queue.push(songId);
+        //console.log(queue);
         return true;
     }
     return false;
@@ -34,7 +35,7 @@ module.exports.add = function(songId){
  * Remove a song from queue
  */
 module.exports.remove = function(song){
-    var index = queue.indexOf(song.id);
+    var index = queue.indexOf(song);
     if (index > -1) {
         queue.splice(index, 1);
         return true;

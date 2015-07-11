@@ -23,11 +23,11 @@ Truss.init(function(components) {
       },
       "$:click": function() {
         if (!this.property("added")) {
-          this.setProperty("icon", "<i class='fa fa-minus'>");
-          this.setProperty("added", true);
-          this.element.classList.add("animated");
-          this.element.classList.remove("removed");
-          this.element.classList.add("added");
+          // this.setProperty("icon", "<i class='fa fa-minus'>");
+          // this.setProperty("added", true);
+          // this.element.classList.add("animated");
+          // this.element.classList.remove("removed");
+          // this.element.classList.add("added");
 
           //No need for client to manually add its queue item
 
@@ -41,10 +41,10 @@ Truss.init(function(components) {
 
           components.socket.emit("new_queue_item", this.property("id"));
         } else {
-          this.setProperty("icon", "<i class='fa fa-plus'>");
-          this.setProperty("added", false);
-          this.element.classList.remove("added");
-          this.element.classList.add("removed");
+          // this.setProperty("icon", "<i class='fa fa-plus'>");
+          // this.setProperty("added", false);
+          // this.element.classList.remove("added");
+          // this.element.classList.add("removed");
 
           components.socket.emit("remove_queue_item", this.property("id"));
 
@@ -67,11 +67,18 @@ Truss.init(function(components) {
     },
     "functions": {
       "toggle": function(){
-        this.setProperty("icon", "<i class='fa fa-minus'>");
+        if (!this.property("added")) {
+          this.setProperty("icon", "<i class='fa fa-minus'>");
           this.setProperty("added", true);
           this.element.classList.add("animated");
           this.element.classList.remove("removed");
           this.element.classList.add("added");
+        } else {
+          this.setProperty("icon", "<i class='fa fa-plus'>");
+          this.setProperty("added", false);
+          this.element.classList.remove("added");
+          this.element.classList.add("removed");
+        }
       }
     }
   });

@@ -156,12 +156,36 @@ Truss.init(function(components) {
         "artist": item[0].artist
       }));
     });
+    components.q.property("items")[queueIndex++].addProperty("id", msg);
     //Toggle for each item already in the queue
     Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
       if (item.property("id") != null){
         if (item.property("id").valueOf() == msg.valueOf()){
           item.toggle();
         }
+      }
+    });
+  });
+
+  components.socket.on("remove_queue_item", function(msg){
+    //received a new song to dd to queue
+    //components.q.removeItem(msg);
+    //Toggle for each item already in the queue
+    Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+      if (item.property("id") != null){
+        // console.log(item.property("id").valueOf());
+        // console.log(msg);
+        if (item.property("id").valueOf() == msg.valueOf()){
+          item.toggle();
+          //console.log("I toggled item " + item);
+        }
+      }
+    });
+    Array.prototype.forEach.call(components.q.property("items"), function(item) {
+      //console.log(item.property("id").valueOf());
+      if (item.property("id").valueOf() == msg.valueOf()){
+        components.q.removeProperty("items", item);
+        //console.log("I toggled item " + item);
       }
     });
   });
