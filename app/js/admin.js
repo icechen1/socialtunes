@@ -69,7 +69,7 @@ function ajax(method, url, callback) {
            } else if(xmlhttp.status == 400) {
               console.error('There was an error 400');
            } else {
-               console.error('something else other than 200 was returned');
+              console.error('something else other than 200 was returned');
            }
         }
     }
@@ -161,6 +161,15 @@ Truss.init(function(components) {
         this.setProperty("icon", "<i class='fa fa-eject'></i>");
         this.element.classList.remove("toggled");
       }
+    },
+    "toggle": function() {
+      if (this.element.classList.contains("toggled")) {
+        this.setProperty("icon", "<i class='fa fa-eject'></i>");
+        this.element.classList.remove("toggled");
+      } else {
+        this.setProperty("icon", "<i class='fa fa-arrow-left'></i>");
+        this.element.classList.add("toggled");
+      }
     }
   });
   document.getElementById("menu").appendChild(components.dirb.element);
@@ -202,7 +211,7 @@ Truss.init(function(components) {
       components.l.show();
       components.qb.show();
       components.dirb.show();
-      //components.dirb.property("open")();
+      components.dirb.property("toggle")();
       components.playerBtn.show();
       components.DirPicker.hide();
     }
@@ -216,7 +225,7 @@ Truss.init(function(components) {
     var tempPath;
 
     ajax("GET", "http://localhost:3005/api/querypath/", function(response) {
-      console.log("What is this" + response);
+      // console.log("What is this" + response);
       if (response == '') {
           console.log("Empty JSON response!")
           return;
@@ -255,16 +264,12 @@ Truss.init(function(components) {
 
   components.player.onSongFinished(function() {
     var newSong = queue.shift();
-    console.log("I am playing " + newSong);
     if (newSong) {
+      console.log(newSong);
       components.player.setSong(newSong);
+      components.socket.emit("remove_queue_item", newSong.id);
     }
   });
-
-  // if(queue.length >0) {
-  //   console.log("When we do this? " + queue);
-  //   components.player.setSong(queue[0]);
-  // }
 
   components.socket.on("initial_library", function(msg) {
     ajax("GET", "http://localhost:3005/api/querysongs/", function(response) {
@@ -315,9 +320,6 @@ Truss.init(function(components) {
   });
 
   components.socket.on("new_queue_item", function(msg){
-    //received a new song to dd to queue
-    //console.log("Received new song.");
-    //console.log("Added new item: http://localhost:3005/api/querySong/" + msg);
     ajax("GET", "http://localhost:3005/api/querySong/" + msg, function(response) {
       item = JSON.parse(response);
       components.q.addProperty("items", components.ListItem.new({
@@ -326,28 +328,23 @@ Truss.init(function(components) {
         "album": item[0].album,
         "artist": item[0].artist
       }));
-      components.q.property("items")[queueIndex++].addProperty("id", msg);
-      queue.push({"url": item[0].url});
-      // console.log("Current queue is:");
-      // console.log(queue);
-      // console.log(components.player.ended());
-      // console.log(components.player.source());
+      components.q.property("items")[queueIndex].addProperty("id", msg);
+      components.q.property("items")[queueIndex++].addProperty("score", 0);
+      queue.push({"url": item[0].url, "id": msg});
       if(components.player.ended() || components.player.source() == ""){
         var newSong = queue.shift();
 
         if (newSong) {
           components.player.setSong(newSong);
+          components.socket.emit("remove_queue_item", newSong.id);
         }
       }
     });
     //Toggle for each item already in the queue
     Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
       if (item.property("id") != null){
-        // console.log(item.property("id").valueOf());
-        // console.log(msg);
         if (item.property("id").valueOf() == msg.valueOf()){
           item.toggle();
-          //console.log("Are you toggling here then?");
         }
       }
     });

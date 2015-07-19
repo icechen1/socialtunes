@@ -29,6 +29,8 @@ function ajax(method, url, callback) {
 
 Truss.init(function(components) {
 
+  var queueIndex = 0;
+
   //Library
   components.l = components.ListView.new({
     "header": "Library",
@@ -155,11 +157,15 @@ Truss.init(function(components) {
         "album": item[0].album,
         "artist": item[0].artist
       }));
+      components.q.property("items")[queueIndex++].addProperty("id", msg);
+      console.log(components.q.property("items"));
     });
-    components.q.property("items")[queueIndex++].addProperty("id", msg);
     //Toggle for each item already in the queue
     Array.prototype.forEach.call(components.l.property("items")[1].property("items"), function(item){
+      console.log(item.property("id"));
+      console.log(msg);
       if (item.property("id") != null){
+
         if (item.property("id").valueOf() == msg.valueOf()){
           item.toggle();
         }
@@ -182,10 +188,11 @@ Truss.init(function(components) {
       }
     });
     Array.prototype.forEach.call(components.q.property("items"), function(item) {
-      //console.log(item.property("id").valueOf());
+      console.log(item.property("id").valueOf());
+      console.log(msg);
       if (item.property("id").valueOf() == msg.valueOf()){
         components.q.removeProperty("items", item);
-        //console.log("I toggled item " + item);
+        queueIndex--;
       }
     });
   });
