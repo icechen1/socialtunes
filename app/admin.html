@@ -6,10 +6,27 @@
     <link href='open-sans.css' rel='stylesheet' type='text/css'>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="http://localhost:3005/socket.io/socket.io.js"></script>
     
     <script type="text/javascript" src="js/Truss/truss.js"></script>
+    <script type="text/javascript" src="js/components/Socket.js"></script>
+
+    <script type="text/javascript" src="js/components/DirectoryPicker.js"></script>
+    <script type="text/javascript" src="js/components/ActionButton.js"></script>
+    <script type="text/javascript" src="js/components/ListItem.js"></script>
+    <script type="text/javascript" src="js/components/LibraryItem.js"></script>
+    <script type="text/javascript" src="js/components/LibrarySubmenu.js"></script>
+    <script type="text/javascript" src="js/components/LibraryView.js"></script>
+    <script type="text/javascript" src="js/components/ListView.js"></script>
+    <script type="text/javascript" src="js/components/ActionButton.js"></script>
+    <script type="text/javascript" src="js/components/InfoButton.js"></script>
+    <script type="text/javascript" src="js/components/MenuButton.js"></script>
     
     <script type="text/javascript" src="js/admin.js"></script>
+    <script>
+      var socket = io('http://localhost:3005', {path: '/socket.io'});
+    </script>
     
     <title>SocialTunes</title>
   </head>
@@ -18,14 +35,17 @@
       <img src="images/cd-transparent.png" /> <h1>SocialTunes</h1>
     </div>
     <div id="musicApp">
-      <div class="DirectoryPicker">
+      <div id="dirPicker"> </div>
+      <div id="library"> </div>
+<!--       <div class="DirectoryPicker">
         <h2>Choose a directory</h2>
         <p>We'll search it and its subfolders for mp3 files to add to SocialTunes.</p>
         <input type="file" nwdirectory style="display:none;" class="fileDialog" />
         <a class="button picker" id="dir">Pick directory</a>
         <a class="button submit">Submit</a>
-      </div>
+      </div> -->
       <audio id="player"></audio>
     </div>
+    <div id="controls"> </div>
   </body>
 </html>

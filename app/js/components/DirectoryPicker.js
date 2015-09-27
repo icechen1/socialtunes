@@ -18,6 +18,10 @@ Truss.init(function(components) {
         this.element.style.transition = 'height .5s ease';
         this.element.offsetHeight = "" + this.element.offsetHeight; // force repaint
         this.element.style.height = '0';
+        this.element.style.marginTop = "0";
+        this.element.style.marginBottom = "0";
+        this.element.style.padding = "0";
+        this.setProperty("open", false);
       },
       "show": function() {
         var prevHeight = "0";
@@ -25,8 +29,12 @@ Truss.init(function(components) {
         var endHeight = getComputedStyle(this.element).height;
         this.element.style.height = prevHeight;
         this.element.offsetHeight = "" + this.element.offsetHeight; // force repaint
-        this.element.style.transition = 'height .5s ease';
+        this.element.style.transition = 'all .5s ease';
         this.element.style.height = endHeight;
+        this.element.style.marginTop = "";
+        this.element.style.marginBottom = "";
+        this.element.style.padding = "20"
+        this.setProperty("open", true);
         this.element.addEventListener('transitionend', function transitionEnd(event) {
           if (event.propertyName == 'height') {
             this.style.transition = '';
@@ -35,15 +43,24 @@ Truss.init(function(components) {
             this.style.overflow = "visible";
           }
         }, false);
+      },
+      "setDir": function(dir) {
+        process.mainModule.exports.setDirectory(dir);
       }
     },
     "events": {
-      "$fileDialog:change": function() {
-        console.log(this.element.querySelector("input").value);
+      ".fileDialog:change": function() {
+        //console.log(this.element.querySelector("input").value);
       },
-      "$picker:click": function() {
+      ".picker:click": function() {
         this.element.querySelector("input").click();
+      },
+      ".submit:click": function() {
+        process.mainModule.exports.setDirectory(this.element.querySelector("input").value);
+        if (typeof this.property("click") == "function") {
+          this.property("click")();
+        }
       }
-    }
+    },
   });
-}, components);
+}, components);  

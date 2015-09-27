@@ -1,5 +1,4 @@
-index.db
-settings.db
+*.db
 
 lib-cov
 *.seed
@@ -18,7 +17,11 @@ tmp
 
 npm-debug.log
 node_modules
+bower_components
 .idea
 *.iml
 .DS_Store
 Thumbs.db
+
+/app/*.jpg
+/app/*.ini

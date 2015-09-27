@@ -1,5 +1,6 @@
 var Truss = (function() {
   
+  //Create Trust object
   var t={};
   
   t.init = function() {
@@ -180,6 +181,10 @@ var Truss = (function() {
       
       c.property = function(property) {
         return properties[property];
+      };
+
+      c.properties = function() {
+        return properties;
       };
       
       var index="";
